@@ -9,24 +9,24 @@ const NavBar = () => {
   return (
     <div className='flex items-center justify-between py-5 font-medium'>
         <Link to='/'>
-            <img src={assets.logo} className='w-36' alt="Trendify" />
+            <img src={assets.logo} className='w-40' alt="Trendify" />
         </Link>
-        <ul className='hidden gap-5 text-sm text-gray-700 sm:flex'>
-            <NavLink to='/' className='flex flex-col items-center gap-1'>
+        <ul className='hidden gap-5 text-sm text-gray-700 sm:flex '>
+            <NavLink to='/' className='flex flex-col items-center gap-1 hover:text-pink-400'>
                 <p>HOME</p>
-                <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
+                <hr className='w-2/4 border-none h-[1.5px] bg-pink-400 hidden' />
             </NavLink>
-            <NavLink to='/collection' className='flex flex-col items-center gap-1'>
+            <NavLink to='/collection' className='flex flex-col items-center gap-1 hover:text-pink-400'>
                 <p>COLLECTION</p>
-                <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
+                <hr className='w-2/4 border-none h-[1.5px] bg-pink-400 hidden' />
             </NavLink>
-            <NavLink to='/about' className='flex flex-col items-center gap-1'>
+            <NavLink to='/about' className='flex flex-col items-center gap-1 hover:text-pink-400'>
                 <p>ABOUT</p>
-                <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
+                <hr className='w-2/4 border-none h-[1.5px] bg-pink-400 hidden' />
             </NavLink>
-            <NavLink to='/contact' className='flex flex-col items-center gap-1'>
+            <NavLink to='/contact' className='flex flex-col items-center gap-1 hover:text-pink-400'>
                 <p>CONTACT</p>
-                <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
+                <hr className='w-2/4 border-none h-[1.5px] bg-pink-400 hidden' />
             </NavLink>
         </ul>
         <div className='flex items-center gap-6'>
