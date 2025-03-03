@@ -3,6 +3,7 @@ import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const Collection = () => {
   const { products, search, showSearch } = useContext(ShopContext);
@@ -89,10 +90,8 @@ const Collection = () => {
           className="flex items-center gap-2 my-2 text-xl cursor-pointer"
         >
           FILTERS
-          <img
-            className={`h-3 sm:hidden ${showFilter ? "rotate-90" : ""}`}
-            src={assets.dropdown_icon}
-            alt="Dropdown"
+          <IoMdArrowDropdown
+            className={`text-lg md:hidden ${showFilter ? "" : "-rotate-90"}`}
           />
         </p>
         {/* Category Filters */}

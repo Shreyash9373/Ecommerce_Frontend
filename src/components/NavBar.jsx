@@ -1,7 +1,12 @@
 import React, { useContext, useState } from "react";
-import { assets } from "../assets/assets";
 import { Link, NavLink } from "react-router-dom";
+import { CiSearch } from "react-icons/ci";
+import { IoCartOutline } from "react-icons/io5";
+
+import { assets } from "../assets/assets";
 import { ShopContext } from "../context/ShopContext";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const NavBar = () => {
   const [visible, setVisible] = useState(false);
@@ -30,27 +35,27 @@ const NavBar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-6">
-        <img
+        <span
           onClick={() => setShowSearch(true)}
-          src={assets.search_icon}
-          className="w-5 cursor-pointer"
-          alt="Search Products"
-        />
+          className="text-3xl cursor-pointer"
+        >
+          <CiSearch />
+        </span>
         <Link to="/login" className="min-w-fit btn-outline">
           Sign in / Sign up
         </Link>
         <Link to="/cart" className="relative">
-          <img src={assets.cart_icon} className="w-5 min-w-5" alt="Cart" />
+          <IoCartOutline className="text-3xl cursor-pointer" />
           <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
             {getCartCount()}
           </p>
         </Link>
-        <img
+        <span
           onClick={() => setVisible(true)}
-          src={assets.menu_icon}
-          className="w-5 cursor-pointer sm:hidden"
-          alt="Menu Icon"
-        />
+          className="text-xl cursor-pointer md:hidden"
+        >
+          <HiOutlineMenuAlt3 />
+        </span>
       </div>
 
       {/* INFO: Sidbar menu for smaller screens */}
@@ -64,11 +69,7 @@ const NavBar = () => {
             onClick={() => setVisible(false)}
             className="flex items-center gap-4 p-3 cursor-pointer"
           >
-            <img
-              src={assets.dropdown_icon}
-              className="h-4 rotate-180"
-              alt="Dropdown"
-            />
+            <IoMdArrowDropdown className="text-lg rotate-90" />
             <p>Back</p>
           </div>
           <NavLink
