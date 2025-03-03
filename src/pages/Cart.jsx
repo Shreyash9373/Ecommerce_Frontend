@@ -6,7 +6,7 @@ import CartTotal from "../components/CartTotal";
 import { MdDelete } from "react-icons/md";
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, navigate } =
+  const { products, cartItems, updateQuantity, navigate } =
     useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
@@ -56,7 +56,7 @@ const Cart = () => {
                   </p>
                   <div className="flex items-center gap-5 mt-2">
                     <p>
-                      {currency}&nbsp;
+                      ₹&nbsp;
                       {productData.price.toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
