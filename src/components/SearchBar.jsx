@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
-import { assets } from "../assets/assets";
 import { useLocation } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 
@@ -11,7 +10,7 @@ const SearchBar = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname.includes("collection")) {
+    if (location.pathname.includes("/")) {
       setVisible(true);
     } else {
       setVisible(false);
