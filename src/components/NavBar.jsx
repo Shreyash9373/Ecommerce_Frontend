@@ -7,10 +7,15 @@ import { assets } from "../assets/assets";
 import { ShopContext } from "../context/ShopContext";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { useAuth } from "../context/AuthContext";
+import Loader from "./utils/Loader";
 
 const NavBar = () => {
   const [visible, setVisible] = useState(false);
   const { setShowSearch, getCartCount } = useContext(ShopContext);
+
+  const { auth, isLoading } = useAuth();
+
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       <Link to="/">
@@ -41,15 +46,25 @@ const NavBar = () => {
         >
           <CiSearch />
         </span>
-        <Link to="/login" className="min-w-fit btn-outline">
-          Sign in / Sign up
-        </Link>
-        <Link to="/cart" className="relative">
-          <IoCartOutline className="text-3xl cursor-pointer" />
-          <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
-            {getCartCount()}
-          </p>
-        </Link>
+        {isLoading ? (
+          <Loader className="text-2xl text-gray-800" />
+        ) : auth.id ? (
+          "Account"
+        ) : (
+          <Link to="/login" className="min-w-fit btn-outline">
+            Sign in / Sign up
+          </Link>
+        )}
+        {isLoading ? (
+          <Loader className="text-2xl text-gray-800" />
+        ) : (
+          <Link to="/cart" className="relative">
+            <IoCartOutline className="text-3xl cursor-pointer" />
+            <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
+              {getCartCount()}
+            </p>
+          </Link>
+        )}
         <span
           onClick={() => setVisible(true)}
           className="text-xl cursor-pointer md:hidden"
