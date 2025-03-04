@@ -2,11 +2,12 @@ import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
+import { VscAccount } from "react-icons/vsc";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 import { assets } from "../assets/assets";
 import { ShopContext } from "../context/ShopContext";
-import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { IoMdArrowDropdown } from "react-icons/io";
 import { useAuth } from "../context/AuthContext";
 import Loader from "./utils/Loader";
 
@@ -49,7 +50,9 @@ const NavBar = () => {
         {isLoading ? (
           <Loader className="text-2xl text-gray-800" />
         ) : auth.id ? (
-          "Account"
+          <Link to="/user/account">
+            <VscAccount className="text-2xl cursor-pointer" />
+          </Link>
         ) : (
           <Link to="/login" className="min-w-fit btn-outline">
             Sign in / Sign up
