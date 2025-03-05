@@ -3,7 +3,7 @@ import FormInput from "../../components/utils/FormInput";
 
 const GeneralPage = () => {
   return (
-    <div className="[--lg-element-width:75%] py-10 flex flex-col min-h-full gap-8">
+    <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8">
       {/* heading */}
       <div className="w-11/12 mx-auto flex flex-col justify-center lg:[width:var(--lg-element-width)]">
         <h2 className="text-xl font-semibold md:text-2xl">General</h2>

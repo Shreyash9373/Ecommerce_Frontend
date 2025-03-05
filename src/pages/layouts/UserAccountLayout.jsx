@@ -59,7 +59,7 @@ const UserAccountLayout = () => {
         </div>
       </div>
 
-      <div className="py-10 flex gap-5 min-h-[95vh] w-11/12 mx-auto md:px-2 lg:px-4 xl:px-20 ">
+      <div className="[--y-padding:2.5rem] py-10 flex gap-32 min-h-[95vh] w-11/12 mx-auto md:px-2 lg:px-4 xl:px-20">
         {/* hamburger button */}
         <IoMenu
           onClick={handleMenuToggle}
@@ -67,9 +67,9 @@ const UserAccountLayout = () => {
         />
 
         {/* desktop sidebar */}
-        <div className="hidden flex-col gap-2 md:flex">
+        <div className="hidden flex-col gap-3 py-[--y-padding] md:flex">
           <h1 className="text-3xl text-gray-800">Settings</h1>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <NavLink to="general" className={linkClasses}>
               General
             </NavLink>
@@ -85,7 +85,7 @@ const UserAccountLayout = () => {
           </div>
         </div>
         {/* content */}
-        <div className="border flex-grow">
+        <div className="flex-grow">
           <Outlet />
         </div>
       </div>
