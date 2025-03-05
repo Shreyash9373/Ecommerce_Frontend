@@ -85,7 +85,7 @@ const UserAccountLayout = () => {
           </div>
         </div>
         {/* content */}
-        <div className="border border-gray-400 flex-grow">
+        <div className="border flex-grow">
           <Outlet />
         </div>
       </div>
