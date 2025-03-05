@@ -59,7 +59,7 @@ const UserAccountLayout = () => {
         </div>
       </div>
 
-      <div className="[--y-padding:2.5rem] py-10 flex gap-32 min-h-[95vh] w-11/12 mx-auto md:px-2 lg:px-4 xl:px-20">
+      <div className="[--y-padding:2.5rem] py-10 flex gap-4 min-h-[95vh] w-11/12 mx-auto md:px-2 md:gap-32 lg:px-4 xl:px-20">
         {/* hamburger button */}
         <IoMenu
           onClick={handleMenuToggle}
