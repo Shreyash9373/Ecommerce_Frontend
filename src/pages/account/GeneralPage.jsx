@@ -11,33 +11,47 @@ const GeneralPage = () => {
           Settings and options to change account information
         </span>
       </div>
-      {/* form grid */}
-      <div className="w-11/12 mx-auto pb-10 grid gap-4 grid-cols-2 lg:[width:var(--lg-element-width)]">
-        <label className="padding" htmlFor="name">
-          Name
-        </label>
-        <FormInput className="rounded-md" name="name" placeholder="New name" />
-        <label className="padding" htmlFor="email">
-          Email
-        </label>
-        <FormInput
-          className="rounded-md"
-          name="email"
-          placeholder="New email"
-        />
-        <label className="padding" htmlFor="mobile">
-          Mobile
-        </label>
-        <FormInput
-          className="rounded-md"
-          name="mobile"
-          placeholder="New mobile"
-        />
+      {/* form */}
+      <div className="w-11/12 mx-auto pb-10 flex flex-col gap-2 md:gap-4 lg:[width:var(--lg-element-width)]">
+        {/* name */}
+        <div className="flex flex-col gap-1 md:flex-row">
+          <label className="md:padding md:w-1/3" htmlFor="name">
+            Name
+          </label>
+          <FormInput
+            className="rounded-md md:w-full"
+            name="name"
+            placeholder="New name"
+          />
+        </div>
+        {/* email */}
+        {/* TODO */}
+        <div className="flex flex-col gap-1 md:flex-row">
+          <label className="md:padding md:w-1/3" htmlFor="email">
+            Email
+          </label>
+          <FormInput
+            className="rounded-md md:w-full"
+            name="email"
+            placeholder="New email"
+          />
+        </div>
+        {/* mobile */}
+        <div className="flex flex-col gap-1 md:flex-row">
+          <label className="md:padding md:w-1/3" htmlFor="mobile">
+            Mobile
+          </label>
+          <FormInput
+            className="rounded-md md:w-full"
+            name="mobile"
+            placeholder="New mobile"
+          />
+        </div>
       </div>
       {/* buttons */}
-      <div className="w-1/3 mx-auto flex justify-between items-center padding md:w-1/4">
-        <button className="w-1/3 btn-outline">Reset</button>
-        <button className="w-1/3 btn-fill">Save</button>
+      <div className="w-10/12 mx-auto flex flex-col justify-between items-center gap-4 padding md:flex-row md:w-2/3 xl:w-1/3">
+        <button className="w-full btn-outline">Reset</button>
+        <button className="w-full btn-fill">Save</button>
       </div>
     </div>
   );
