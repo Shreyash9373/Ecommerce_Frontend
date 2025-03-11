@@ -3,16 +3,16 @@ import FormInput from "../../components/utils/FormInput";
 
 const GeneralPage = () => {
   return (
-    <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8">
+    <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 lg:ml-24">
       {/* heading */}
-      <div className="w-11/12 mx-auto flex flex-col justify-center lg:[width:var(--lg-element-width)]">
+      <div className="w-11/12 flex flex-col justify-center lg:[width:var(--lg-element-width)]">
         <h2 className="text-xl font-semibold md:text-2xl">General</h2>
         <span className="text-gray-600 text-sm">
           Settings and options to change account information
         </span>
       </div>
       {/* form */}
-      <div className="w-11/12 mx-auto pb-10 flex flex-col gap-2 md:gap-4 lg:[width:var(--lg-element-width)]">
+      <div className="w-11/12 pb-10 flex flex-col gap-2 md:gap-4 lg:[width:var(--lg-element-width)]">
         {/* name */}
         <div className="flex flex-col gap-1 md:flex-row">
           <label className="md:padding md:w-1/3" htmlFor="name">
@@ -25,7 +25,6 @@ const GeneralPage = () => {
           />
         </div>
         {/* email */}
-        {/* TODO */}
         <div className="flex flex-col gap-1 md:flex-row">
           <label className="md:padding md:w-1/3" htmlFor="email">
             Email
