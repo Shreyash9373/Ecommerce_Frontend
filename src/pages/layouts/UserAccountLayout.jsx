@@ -3,7 +3,7 @@ import { IoMenu } from "react-icons/io5";
 import { NavLink, Outlet } from "react-router-dom";
 
 const linkClasses = ({ isActive }) =>
-  (isActive ? "bg-gray-100 font-medium" : "") + " rounded-md px-4 py-1";
+  (isActive ? "bg-gray-200/70 font-medium" : "") + " rounded-md px-4 py-1";
 
 const UserAccountLayout = () => {
   const [menuOpen, setMenuOpen] = useState(false);
