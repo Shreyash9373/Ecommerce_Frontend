@@ -19,6 +19,7 @@ import GeneralPage from "./pages/account/GeneralPage";
 import PasswordPage from "./pages/account/PasswordPage";
 import AddressPage from "./pages/account/AddressPage";
 import OrderPage from "./pages/account/OrderPage";
+import VendorRegistration from "./pages/vendor/VendorRegistration";
 
 const App = () => {
   return (
@@ -33,8 +34,9 @@ const App = () => {
             <Route path="password" element={<PasswordPage />} />
             <Route path="address" element={<AddressPage />} />
             <Route path="orders" element={<OrderPage />} />
+            
           </Route>
-
+         
           {/* Main routes */}
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
@@ -47,6 +49,7 @@ const App = () => {
             <Route path="/place-order" element={<PlaceOrder />} />
             <Route path="/orders" element={<Orders />} />
           </Route>
+          <Route path="/registration" element={<VendorRegistration />} />
         </Routes>
       </AuthContextProvider>
     </div>

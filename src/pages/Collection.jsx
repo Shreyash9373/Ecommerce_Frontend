@@ -82,7 +82,7 @@ const Collection = () => {
   }, [sortType]);
 
   return (
-    <div className="flex flex-col gap-1 pt-10 border-t sm:flex-row sm:gap-10">
+    <div className="flex flex-col gap-1 pt-10 p-5 border-t sm:flex-row sm:gap-10">
       {/* Filter Options */}
       <div className="min-w-60">
         <p
@@ -96,7 +96,7 @@ const Collection = () => {
         </p>
         {/* Category Filters */}
         <div
-          className={`border border-gray-300 pl-5 py-3 mt-6 ${
+          className={`border border-gray-300 pl-5 py-3 mb-5 mt-6 ${
             showFilter ? "" : "hidden"
           } sm:block`}
         >
@@ -106,36 +106,36 @@ const Collection = () => {
               <input
                 className="w-3"
                 type="checkbox"
-                value={"Men"}
+                value={"Electronics"}
                 onChange={toggleCategory}
-                checked={category.includes("Men")}
+                checked={category.includes("Electronics")}
               />
-              Men
+              Electronics
             </label>
             <label className="flex gap-2 cursor-pointer">
               <input
                 className="w-3"
                 type="checkbox"
-                value={"Women"}
+                value={"Cloths"}
                 onChange={toggleCategory}
-                checked={category.includes("Women")}
+                checked={category.includes("Cloths")}
               />
-              Women
+              Coths
             </label>
             <label className="flex gap-2 cursor-pointer">
               <input
                 className="w-3"
                 type="checkbox"
-                value={"Kids"}
+                value={"Furniture"}
                 onChange={toggleCategory}
-                checked={category.includes("Kids")}
+                checked={category.includes("Furniture")}
               />
-              Kids
+              Furnitures
             </label>
           </div>
         </div>
         {/* Sub Category Filters */}
-        <div
+        {/* <div
           className={`border border-gray-300 pl-5 py-3 my-5 ${
             showFilter ? "" : "hidden"
           } sm:block`}
@@ -173,7 +173,7 @@ const Collection = () => {
               Winterwear
             </label>
           </div>
-        </div>
+        </div> */}
         {/* Clear Filters Button */}
         <button
           className={`px-4 py-2 mt-1 text-white bg-black rounded hover:bg-gray-900 ${
@@ -188,7 +188,7 @@ const Collection = () => {
       {/* View Product Items */}
       <div className="flex-1">
         <div className="flex justify-between mb-4 text-base sm:text-2xl">
-          <Title text1={"ALL"} text2={"COLLECTIONS"} />
+          <Title text1={"ALL"} text2={"PRODUCTS"} />
           {/* Product Sort */}
           <select
             onChange={(e) => setSortType(e.target.value)}
