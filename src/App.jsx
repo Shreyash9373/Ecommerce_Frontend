@@ -19,7 +19,7 @@ import GeneralPage from "./pages/account/GeneralPage";
 import PasswordPage from "./pages/account/PasswordPage";
 import AddressPage from "./pages/account/AddressPage";
 import OrderPage from "./pages/account/OrderPage";
-import VendorRegistration from "./pages/Vendor/VendorRegistration";
+import VendorRegistration from "./pages/vendor/VendorRegistration";
 
 const App = () => {
   return (

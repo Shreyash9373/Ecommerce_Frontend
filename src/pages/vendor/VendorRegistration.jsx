@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { toast } from "react-toastify";
 const VendorRegistration = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -58,7 +58,16 @@ const VendorRegistration = () => {
 
       const result = await response.json();
       if (response.ok) {
-        alert("Vendor Registration Request Successfully Submitted!");
+        //alert("Vendor Registration Request Successfully Submitted!");
+        toast.success("Vendor Registration Request Successfull", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+        });
         setFormData({
           name: "",
           email: "",
@@ -72,10 +81,28 @@ const VendorRegistration = () => {
           ],
         });
       } else {
-        alert(result.message || "Registration failed!");
+        //alert(result.message || "Registration failed!");
+        toast.error("Registraion Failed!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+        });
       }
     } catch (error) {
-      alert("Error: " + error.message);
+     // alert("Error: " + error.message);
+     toast.error("Error - "+ error.message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
     }
     setLoading(false);
   };
@@ -141,7 +168,7 @@ const VendorRegistration = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-black text-white p-3 rounded-md hover:bg-gray-900 transition-all font-medium"
+            className="w-full  p-3 btn-fill"
             disabled={loading}
           >
             {loading ? "Registering..." : "Sign Up"}
