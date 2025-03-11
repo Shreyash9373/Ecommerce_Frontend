@@ -63,7 +63,7 @@ const UserAccountLayout = () => {
         {/* hamburger button */}
         <IoMenu
           onClick={handleMenuToggle}
-          className="text-2xl text-gray-600 md:hidden"
+          className="text-2xl mr-4 text-gray-600 md:hidden"
         />
 
         {/* desktop sidebar */}
