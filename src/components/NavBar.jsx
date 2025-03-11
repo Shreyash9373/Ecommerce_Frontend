@@ -18,7 +18,7 @@ const NavBar = () => {
   const { auth, isLoading } = useAuth();
 
   return (
-    <div className="flex items-center justify-between py-5 font-medium">
+    <div className="flex items-center justify-between py-5 p-5 font-medium">
       <Link to="/">
         <img src={assets.logo} className="w-36" alt="Trendify" />
       </Link>
@@ -28,7 +28,7 @@ const NavBar = () => {
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
         <NavLink to="/collection" className="flex flex-col items-center gap-1">
-          <p>COLLECTION</p>
+          <p>PRODUCTS</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
         <NavLink to="/about" className="flex flex-col items-center gap-1">
@@ -41,6 +41,10 @@ const NavBar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-6">
+      <NavLink to="/registration" className="flex items-center gap-2 border border-gray-400 px-4 py-2 hover:bg-gray-100">
+  <p>Become a Seller?</p>
+</NavLink>
+
         <span
           onClick={() => setShowSearch(true)}
           className="text-3xl cursor-pointer"
