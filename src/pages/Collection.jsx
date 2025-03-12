@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import Title from "../components/Title";
-import ProductItem from "../components/ProductItem";
+import ProductCard from "../components/ProductCard";
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Collection = () => {
@@ -201,15 +201,15 @@ const Collection = () => {
         </div>
         {/* Map Products */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
-          {filterProducts.map((item, index) => (
-            <ProductItem
+          {/* {filterProducts.map((item, index) => (
+            <ProductCard
               key={index}
               id={item._id}
               name={item.name}
               image={item.image}
               price={item.price}
             />
-          ))}
+          ))} */}
         </div>
       </div>
     </div>
