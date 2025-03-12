@@ -9,8 +9,18 @@ const ordersData = {
       estimatedArrival: "28 May 2024",
       status: "On Deliver",
       items: [
-        { name: "Nike Air Max SYSTM", price: 1459000, size: 24, image: "url-to-image1" },
-        { name: "Nike Air Rift", price: 1909000, size: 24, image: "url-to-image2" },
+        {
+          name: "Nike Air Max SYSTM",
+          price: 1459000,
+          size: 24,
+          image: "url-to-image1",
+        },
+        {
+          name: "Nike Air Rift",
+          price: 1909000,
+          size: 24,
+          image: "url-to-image2",
+        },
       ],
       total: 7890000,
     },
@@ -21,9 +31,24 @@ const ordersData = {
       estimatedArrival: "29 May 2024",
       status: "On Deliver",
       items: [
-        { name: "Nike Air Max SYSTM", price: 1459000, size: 24, image: "url-to-image1" },
-        { name: "Nike Air Rift", price: 1909000, size: 24, image: "url-to-image2" },
-        { name: "Nike Air Rift", price: 1909000, size: 24, image: "url-to-image2" },
+        {
+          name: "Nike Air Max SYSTM",
+          price: 1459000,
+          size: 24,
+          image: "url-to-image1",
+        },
+        {
+          name: "Nike Air Rift",
+          price: 1909000,
+          size: 24,
+          image: "url-to-image2",
+        },
+        {
+          name: "Nike Air Rift",
+          price: 1909000,
+          size: 24,
+          image: "url-to-image2",
+        },
       ],
       total: 7990000,
     },
@@ -36,8 +61,18 @@ const ordersData = {
       estimatedArrival: "9 Jul 2024",
       status: "Arrived",
       items: [
-        { name: "Nike Gamma Force", price: 1399000, size: 24, image: "url-to-image3" },
-        { name: "Nike Cortez", price: 1299000, size: 24, image: "url-to-image4" },
+        {
+          name: "Nike Gamma Force",
+          price: 1399000,
+          size: 24,
+          image: "url-to-image3",
+        },
+        {
+          name: "Nike Cortez",
+          price: 1299000,
+          size: 24,
+          image: "url-to-image4",
+        },
       ],
       total: 2900000,
     },
@@ -49,9 +84,14 @@ const OrderPage = () => {
   const [activeTab, setActiveTab] = useState("shipping");
 
   return (
-    <div className="py-6 px-4 max-w-6xl mx-auto">
-      <h2 className="text-xl font-semibold md:text-2xl text-center">My Orders</h2>
+    <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 lg:ml-24">
+      {/* heading */}
+      <div className="w-11/12 flex flex-col justify-center lg:[width:var(--lg-element-width)]">
+        <h2 className="text-xl font-semibold md:text-2xl">Orders</h2>
+        <span className="text-gray-600 text-sm">All of your orders.</span>
+      </div>
 
+      {/* tabs */}
       <div className="flex items-center mt-4 bg-gray-100 rounded-full p-2 w-full max-w-lg mx-auto">
         {["shipping", "arrived", "canceled"].map((tab) => (
           <button
@@ -71,6 +111,7 @@ const OrderPage = () => {
         ))}
       </div>
 
+      {/* orders */}
       <div className="mt-6">
         {ordersData[activeTab].length === 0 ? (
           <p className="text-center text-gray-500">No orders found.</p>
@@ -84,25 +125,41 @@ const OrderPage = () => {
                     {order.status}
                   </span>
                 </div>
-                <p className="text-gray-500 text-sm">{order.from} → {order.to}</p>
-                <p className="text-gray-500 text-sm">Estimated Arrival: <strong>{order.estimatedArrival}</strong></p>
+                <p className="text-gray-500 text-sm">
+                  {order.from} → {order.to}
+                </p>
+                <p className="text-gray-500 text-sm">
+                  Estimated Arrival: <strong>{order.estimatedArrival}</strong>
+                </p>
 
                 <div className="mt-3 space-y-2 max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400">
                   {order.items.map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 border-b py-2">
-                      <div className="w-16 h-16 bg-gray-200 flex-shrink-0"></div> {/* Image Placeholder */}
+                    <div
+                      key={index}
+                      className="flex items-center gap-3 border-b py-2"
+                    >
+                      <div className="w-16 h-16 bg-gray-200 flex-shrink-0"></div>{" "}
+                      {/* Image Placeholder */}
                       <div className="flex-1">
                         <p className="font-medium">{item.name}</p>
-                        <p className="text-sm text-gray-500">Size: {item.size}</p>
-                        <p className="text-sm font-semibold">Rs {item.price.toLocaleString()}</p>
+                        <p className="text-sm text-gray-500">
+                          Size: {item.size}
+                        </p>
+                        <p className="text-sm font-semibold">
+                          Rs {item.price.toLocaleString()}
+                        </p>
                       </div>
                     </div>
                   ))}
                 </div>
 
                 <div className="mt-3 flex justify-between items-center">
-                  <p className="font-semibold">Total: Rs {order.total.toLocaleString()}</p>
-                  <button className="bg-black text-white px-4 py-2 rounded-full">Details</button>
+                  <p className="font-semibold">
+                    Total: Rs {order.total.toLocaleString()}
+                  </p>
+                  <button className="bg-black text-white px-4 py-2 rounded-full">
+                    Details
+                  </button>
                 </div>
               </div>
             ))}
