@@ -138,7 +138,7 @@ const OrderPage = () => {
                       key={index}
                       className="flex items-center gap-3 border-b py-2"
                     >
-                      <div className="w-16 h-16 bg-gray-200 flex-shrink-0"></div>{" "}
+                      <div className="w-16 h-16 bg-gray-200 flex-shrink-0"></div>
                       {/* Image Placeholder */}
                       <div className="flex-1">
                         <p className="font-medium">{item.name}</p>
@@ -146,7 +146,7 @@ const OrderPage = () => {
                           Size: {item.size}
                         </p>
                         <p className="text-sm font-semibold">
-                          Rs {item.price.toLocaleString()}
+                          ₹ {item.price.toLocaleString()}
                         </p>
                       </div>
                     </div>
@@ -155,7 +155,7 @@ const OrderPage = () => {
 
                 <div className="mt-3 flex justify-between items-center">
                   <p className="font-semibold">
-                    Total: Rs {order.total.toLocaleString()}
+                    Total: ₹ {order.total.toLocaleString()}
                   </p>
                   <button className="bg-black text-white px-4 py-2 rounded-full">
                     Details
