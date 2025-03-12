@@ -137,34 +137,6 @@ const VendorRegistration = () => {
               </div>
             ))}
           </div>
-
-          {/* File Upload Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">
-                Upload Aadhaar Card
-              </label>
-              <input
-                type="file"
-                accept=".png,.jpg,.jpeg,.pdf"
-                onChange={(e) => handleFileChange(e, "aadhaarCard")}
-                className="w-full p-2 border rounded-md"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">
-                Upload PAN Card
-              </label>
-              <input
-                type="file"
-                accept=".png,.jpg,.jpeg,.pdf"
-                onChange={(e) => handleFileChange(e, "panCard")}
-                className="w-full p-2 border rounded-md"
-              />
-            </div>
-          </div>
-
           {/* Submit Button */}
           <button
             type="submit"
