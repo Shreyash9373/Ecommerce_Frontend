@@ -41,7 +41,7 @@ const AddressPage = () => {
   const [editingAddr, setEditingAddr] = useState({});
 
   return (
-    <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 lg:ml-24">
+    <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 md:ml-12 lg:ml-24">
       {/* heading */}
       <div className="w-11/12 mx-auto flex flex-col justify-center lg:[width:var(--lg-element-width)]">
         <h2 className="text-xl font-semibold md:text-2xl">Address</h2>
