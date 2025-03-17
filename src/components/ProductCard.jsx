@@ -3,15 +3,14 @@ import { ShopContext } from "../context/ShopContext";
 import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
-  console.log(product);
   return (
     <Link
-      className="text-gray-700 cursor-pointer"
+      className="flex flex-col gap-2 text-gray-700 cursor-pointer hover:underline"
       to={`/product/${product._id}`}
     >
-      <div className="overflow-hidden">
+      <div className="grow overflow-hidden">
         <img
-          className="transition ease-in-out hover:scale-110"
+          className="transition ease-in-out duration-300 hover:scale-110"
           src={product.images[0]}
           alt="Product"
         />

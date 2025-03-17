@@ -28,7 +28,7 @@ const FeaturedProducts = () => {
   }, []);
 
   return (
-    <div className="py-4 md:py-6 lg:py-8">
+    <div className="p-4 md:py-6 lg:py-8">
       {/* heading */}
       <h1 className="text-3xl text-center">Featured Products</h1>
       {/* products */}
@@ -37,7 +37,7 @@ const FeaturedProducts = () => {
       ) : featuredProducts === null ? (
         <ErrorComponent className="py-20" />
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-6">
+        <div className="grid grid-cols-2 gap-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {featuredProducts.map((product, index) => (
             <ProductCard key={index} product={product} />
           ))}
