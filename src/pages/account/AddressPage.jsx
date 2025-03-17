@@ -41,7 +41,7 @@ const AddressPage = () => {
   const [editingAddr, setEditingAddr] = useState({});
 
   return (
-    <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 lg:ml-24">
+    <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 md:ml-12 lg:ml-24">
       {/* heading */}
       <div className="w-11/12 mx-auto flex flex-col justify-center lg:[width:var(--lg-element-width)]">
         <h2 className="text-xl font-semibold md:text-2xl">Address</h2>
@@ -51,7 +51,7 @@ const AddressPage = () => {
       </div>
 
       {/* addresses */}
-      <div className="p-8 mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 2xl:grid-cols-3 lg:[width:var(--lg-element-width)]">
+      <div className="w-11/12 mx-auto grid grid-cols-1 gap-8 lg:grid-cols-2 md:p-8 2xl:grid-cols-3">
         {/* add address button */}
         <button
           onClick={(e) => setAddModal((prev) => !prev)}
@@ -67,12 +67,12 @@ const AddressPage = () => {
             className="shadow-xl p-4 border border-gray-400 flex flex-col gap-4"
           >
             {/* details */}
-            <div className="flex flex-col col gap-2">
-              <span className="text-lg">{addr.street}</span>
-              <span className="text-lg">{addr.city}</span>
-              <span className="text-lg">{addr.state}</span>
-              <span className="text-lg">{addr.country}</span>
-              <span className="text-lg">{addr.zipCode}</span>
+            <div className="flex flex-col md:gap-1">
+              <span className="text-sm md:text-lg">{addr.street}</span>
+              <span className="text-sm md:text-lg">{addr.city}</span>
+              <span className="text-sm md:text-lg">{addr.state}</span>
+              <span className="text-sm md:text-lg">{addr.country}</span>
+              <span className="text-sm md:text-lg">{addr.zipCode}</span>
             </div>
             {/* operations */}
             <div className="flex divide-x divide-gray-400">
