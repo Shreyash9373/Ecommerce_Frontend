@@ -1,57 +1,69 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ShopContext } from "../context/ShopContext";
-import { assets } from "../assets/assets";
-import RelatedProducts from "../components/RelatedProducts";
 import { FaStar } from "react-icons/fa";
+
+import { ShopContext } from "../context/ShopContext";
+import RelatedProducts from "../components/RelatedProducts";
+import useApi from "../hooks/api";
+import ErrorComponent from "../components/utils/ErrorComponent";
+
+const fetchProductDetails = async (productId) => {
+  const api = useApi();
+  const res = await api.get(`product/get-product/${productId}`);
+  return res.data.data.product;
+};
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, addToCart } = useContext(ShopContext);
-  const [productData, setProductData] = useState(false);
-  const [image, setImage] = useState("");
-  const [size, setSize] = useState("");
-
-  const fetchProductData = async () => {
-    products.map((item) => {
-      if (item._id === productId) {
-        setProductData(item);
-        setImage(item.image[0]);
-        return null;
-      }
-    });
-  };
+  // const { products, addToCart } = useContext(ShopContext);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [productDetails, setProductDetails] = useState();
 
   useEffect(() => {
-    fetchProductData();
-  }, [productId, products]);
+    try {
+      (async () => {
+        const productDetails = await fetchProductDetails(productId);
+        setProductDetails(productDetails);
+        setSelectedImage(productDetails.images[0]);
+      })();
+    } catch (error) {
+    } finally {
+      setProductDetails(null);
+    }
+  }, []);
 
-  return productData ? (
-    <div className="pt-10 transition-opacity duration-500 ease-in border-t-2 opacity-100">
+  return productDetails === undefined ? (
+    "a"
+  ) : productDetails === null ? (
+    <ErrorComponent />
+  ) : (
+    <div className="mx-auto w-11/12 pt-10 transition-opacity duration-500 ease-in border-t-2 opacity-100">
       {/* Product Data */}
       <div className="flex flex-col gap-12 sm:gap-12 sm:flex-row">
         {/* Product Images */}
         <div className="flex flex-col-reverse flex-1 gap-3 sm:flex-row">
           <div className="flex justify-between overflow-x-auto sm:flex-col sm:overflow-y-scroll sm:justify-normal sm:w-[18.7%] w-full">
-            {productData.image.map((item, index) => (
+            {productDetails.images.map((item, index) => (
               <img
                 src={item}
                 key={index}
-                onClick={() => setImage(item)}
+                onClick={() => setSelectedImage(item)}
                 className={`w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer ${
-                  image === item ? "border-2 border-gray-600 py-2 px-2" : ""
+                  selectedImage === item
+                    ? "border-2 border-gray-600 py-2 px-2"
+                    : ""
                 }`}
                 alt="Photo"
               />
             ))}
           </div>
           <div className="w-full sm:w-[80%]">
-            <img src={image} className="w-full h-auto" alt="Photo" />
+            <img src={selectedImage} className="w-full h-auto" alt="Photo" />
           </div>
         </div>
         {/* Product Info */}
         <div className="flex-1">
-          <h1 className="mt-2 text-2xl font-medium">{productData.name}</h1>
+          <h1 className="mt-2 text-2xl font-medium">{productDetails.name}</h1>
           <div className="flex items-center gap-1 mt-2">
             <FaStar className="text-lg text-yellow-500" />
             <FaStar className="text-lg text-yellow-500" />
@@ -60,34 +72,20 @@ const Product = () => {
             <FaStar className="text-lg text-yellow-300" />
             <p className="pl-2">(122)</p>
           </div>
-          <p className="mt-5 text-3xl font-medium">₹{productData.price}</p>
-          <p className="mt-5 text-gray-500 md:w-4/5">
-            {productData.description}
-          </p>
-          <div className="flex flex-col gap-4 my-8">
-            <p>Select Size</p>
-            <div className="flex gap-2">
-              {productData.sizes.map((item, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSize(item)}
-                  // className={`border py-2 px-4 bg-gray-100 rounded-md ${
-                  //   item === size ? "border-orange-500" : ""
-                  // }`}
-                  className={
-                    "padding border border-black transition-colors duration-300 ease-in-out " +
-                    (item === size
-                      ? "bg-black text-white"
-                      : "bg-white text-black")
-                  }
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
+          <p className="mt-5 text-3xl font-medium">₹{productDetails.price}</p>
+          <p className="text-gray-500 md:w-4/5">{productDetails.description}</p>
+          <div className="mt-5 flex flex-col gap-4 mb-8">
+            {Object.keys(productDetails.attributes).map((k, index) => (
+              <div key={index} className="w-11/12 flex gap-2 lg:w-1/2">
+                <p className="w-1/2 font-semibold text-lg">{k}</p>
+                <p className="w-1/2 font-light text-lg">
+                  {productDetails.attributes[k]}
+                </p>
+              </div>
+            ))}
           </div>
           <button
-            onClick={() => addToCart(productData._id, size)}
+            onClick={() => addToCart(productDetails._id, size)}
             // className="px-8 py-3 text-sm text-white bg-black active:bg-gray-700"
             className="btn-fill"
           >
@@ -128,12 +126,10 @@ const Product = () => {
       </div>
       {/* Display Related Products */}
       <RelatedProducts
-        category={productData.category}
-        subCategory={productData.subCategory}
+        category={productDetails.category}
+        subCategory={productDetails.subCategory}
       />
     </div>
-  ) : (
-    <div className="opacity-0"></div>
   );
 };
 

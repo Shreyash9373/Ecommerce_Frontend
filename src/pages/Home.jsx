@@ -6,7 +6,6 @@ import BestSeller from "../components/BestSeller";
 import OurPolicy from "../components/OurPolicy";
 import NewsLetterBox from "../components/NewsLetterBox";
 import FeaturedProducts from "../components/FeaturedProducts";
-import useApi from "../hooks/api";
 
 const Home = () => {
   return (
