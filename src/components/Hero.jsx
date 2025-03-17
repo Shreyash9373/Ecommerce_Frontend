@@ -15,18 +15,17 @@ const Hero = () => {
   const scroll = (direction) => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
-        left: direction === "left" ? -200 : 200, // Scroll left or right
+        left: direction === "left" ? -200 : 200,
         behavior: "smooth",
       });
     }
   };
 
   return (
-    <div className="flex flex-col border  p-5 border-gray-400 sm:flex-row">
+    <div className="flex flex-col border p-5 border-gray-400 sm:flex-row">
       {/* Hero left side */}
       <div className="flex items-center justify-center w-full py-10 sm:w-1/2 sm:py-0">
         <div className="text-[#414141]">
-
           <h1 className="text-3xl leading-relaxed sm:py-3 lg:text-5xl prata-regular">
             Products That We Sell
           </h1>
@@ -55,7 +54,7 @@ const Hero = () => {
           {categories.map((category, index) => (
             <div key={index} className="min-w-[150px] sm:min-w-[200px]">
               <img
-                className="w-full rounded-lg"
+                className="w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] rounded-lg object-cover"
                 src={category.img}
                 alt={category.name}
               />
