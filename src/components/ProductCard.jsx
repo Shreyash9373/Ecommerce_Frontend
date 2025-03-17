@@ -10,7 +10,7 @@ const ProductCard = ({ product }) => {
     >
       <div className="grow overflow-hidden">
         <img
-          className="transition ease-in-out duration-300 hover:scale-110"
+          className="h-full object-cover transition ease-in-out duration-300 hover:scale-110"
           src={product.images[0]}
           alt="Product"
         />
