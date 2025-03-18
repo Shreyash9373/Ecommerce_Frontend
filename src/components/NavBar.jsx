@@ -28,24 +28,6 @@ const NavBar = () => {
         <FormInput className="w-full" placeholder="Search..." />
         <CiSearch className="text-xl absolute z-10 right-4 top-1/2 -translate-y-1/2" />
       </div>
-      {/* <ul className="hidden gap-5 text-sm text-gray-700 md:flex">
-        <NavLink to="/" className="flex flex-col items-center gap-1">
-          <p>HOME</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
-        </NavLink>
-        <NavLink to="/collection" className="flex flex-col items-center gap-1">
-          <p>PRODUCTS</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
-        </NavLink>
-        <NavLink to="/about" className="flex flex-col items-center gap-1">
-          <p>ABOUT</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
-        </NavLink>
-        <NavLink to="/contact" className="flex flex-col items-center gap-1">
-          <p>CONTACT</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
-        </NavLink>
-      </ul> */}
       <div className="flex items-center gap-6">
         <NavLink
           to="/registration"
@@ -54,12 +36,6 @@ const NavBar = () => {
           <p>Become a Seller?</p>
         </NavLink>
 
-        <span
-          onClick={() => setShowSearch(true)}
-          className="text-3xl cursor-pointer"
-        >
-          <CiSearch />
-        </span>
         {isLoading ? (
           <Loader className="text-2xl text-gray-800" />
         ) : auth.id ? (
