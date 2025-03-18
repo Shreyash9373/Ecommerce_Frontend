@@ -10,6 +10,7 @@ import { assets } from "../assets/assets";
 import { ShopContext } from "../context/ShopContext";
 import { useAuth } from "../context/AuthContext";
 import Loader from "./utils/Loader";
+import FormInput from "./utils/FormInput";
 
 const NavBar = () => {
   const [visible, setVisible] = useState(false);
@@ -22,7 +23,12 @@ const NavBar = () => {
       <Link to="/">
         <img src={assets.logo} className="w-36" alt="Trendify" />
       </Link>
-      <ul className="hidden gap-5 text-sm text-gray-700 md:flex">
+      {/* Search bar */}
+      <div className="relative w-1/2">
+        <FormInput className="w-full" placeholder="Search..." />
+        <CiSearch className="text-xl absolute z-10 right-4 top-1/2 -translate-y-1/2" />
+      </div>
+      {/* <ul className="hidden gap-5 text-sm text-gray-700 md:flex">
         <NavLink to="/" className="flex flex-col items-center gap-1">
           <p>HOME</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
@@ -39,11 +45,14 @@ const NavBar = () => {
           <p>CONTACT</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
-      </ul>
+      </ul> */}
       <div className="flex items-center gap-6">
-      <NavLink to="/registration" className="flex items-center gap-2 border border-gray-400 px-4 py-2 hover:bg-gray-100">
-  <p>Become a Seller?</p>
-</NavLink>
+        <NavLink
+          to="/registration"
+          className="flex items-center gap-2 border border-gray-400 px-4 py-2 hover:bg-gray-100"
+        >
+          <p>Become a Seller?</p>
+        </NavLink>
 
         <span
           onClick={() => setShowSearch(true)}
