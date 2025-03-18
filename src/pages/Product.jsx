@@ -6,6 +6,7 @@ import { ShopContext } from "../context/ShopContext";
 import RelatedProducts from "../components/RelatedProducts";
 import useApi from "../hooks/api";
 import ErrorComponent from "../components/utils/ErrorComponent";
+import Modal from "../components/utils/Modal";
 
 const fetchProductDetails = async (productId) => {
   const api = useApi();
@@ -18,6 +19,7 @@ const Product = () => {
   // const { products, addToCart } = useContext(ShopContext);
   const [selectedImage, setSelectedImage] = useState("");
   const [productDetails, setProductDetails] = useState();
+  const [imageModalOpen, setImageModalOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -32,6 +34,10 @@ const Product = () => {
     }
   }, []);
 
+  const handleImageModalToggle = () => {
+    setImageModalOpen(true);
+  };
+
   return productDetails === undefined ? (
     "a"
   ) : productDetails === null ? (
@@ -43,7 +49,8 @@ const Product = () => {
         {/* Product Images */}
         <div className="flex flex-col-reverse flex-1 gap-3 sm:flex-row">
           <div className="flex justify-between overflow-x-auto sm:flex-col sm:overflow-y-scroll sm:justify-normal sm:w-[18.7%] w-full">
-            {productDetails.images.map((item, index) => (
+            {/* first 3 images */}
+            {productDetails.images.slice(0, 3).map((item, index) => (
               <img
                 src={item}
                 key={index}
@@ -56,6 +63,15 @@ const Product = () => {
                 alt="Photo"
               />
             ))}
+            {/* modal for other images */}
+            {productDetails.images.length > 3 && (
+              <button
+                onClick={handleImageModalToggle}
+                className="btn-outline w-[24%] border sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer"
+              >
+                +<span>{productDetails.images.length - 3}</span>
+              </button>
+            )}
           </div>
           <div className="w-full sm:w-[80%]">
             <img src={selectedImage} className="w-full h-auto" alt="Photo" />
@@ -125,10 +141,36 @@ const Product = () => {
         </div>
       </div>
       {/* Display Related Products */}
-      <RelatedProducts
+      {/* <RelatedProducts
         category={productDetails.category}
         subCategory={productDetails.subCategory}
-      />
+      /> */}
+
+      {/* Image modal */}
+      <Modal
+        className="rounded-lg"
+        open={imageModalOpen}
+        onCancel={(e) => setImageModalOpen(false)}
+      >
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+          {productDetails.images.slice(3).map((image, index) => (
+            <img
+              src={image}
+              key={index}
+              onClick={() => {
+                setSelectedImage(image);
+                setImageModalOpen(false);
+              }}
+              className={`w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer ${
+                selectedImage === image
+                  ? "border-2 border-gray-600 py-2 px-2"
+                  : ""
+              }`}
+              alt="Photo"
+            />
+          ))}
+        </div>
+      </Modal>
     </div>
   );
 };
