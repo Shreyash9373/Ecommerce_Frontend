@@ -6,7 +6,7 @@ const ProductCard = ({ product }) => {
   return (
     <Link
       className="flex flex-col gap-2 text-gray-700 cursor-pointer hover:underline"
-      to={`/product/${product._id}`}
+      to={`/products/${product._id}`}
     >
       <div className="grow overflow-hidden">
         <img

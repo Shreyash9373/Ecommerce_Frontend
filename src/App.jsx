@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Home from "./pages/Home";
-import Collection from "./pages/Collection";
+import Products from "./pages/Products";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Product from "./pages/Product";
@@ -34,21 +34,25 @@ const App = () => {
             <Route path="password" element={<PasswordPage />} />
             <Route path="address" element={<AddressPage />} />
             <Route path="orders" element={<OrderPage />} />
-            
           </Route>
-         
+
           {/* Main routes */}
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
-            <Route path="/collection" element={<Collection />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/product/:productId" element={<Product />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<SigningPage />} />
             <Route path="/place-order" element={<PlaceOrder />} />
             <Route path="/orders" element={<Orders />} />
+
+            {/* Product routes */}
+            <Route path="products">
+              <Route index element={<Products />} />
+              <Route path=":productId" element={<Product />} />
+            </Route>
           </Route>
+
           <Route path="/registration" element={<VendorRegistration />} />
         </Routes>
       </AuthContextProvider>

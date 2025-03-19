@@ -1,85 +1,113 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ShopContext } from "../context/ShopContext";
-import { assets } from "../assets/assets";
-import Title from "../components/Title";
-import ProductCard from "../components/ProductCard";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-const Collection = () => {
-  const { products, search, showSearch } = useContext(ShopContext);
+import { ShopContext } from "../context/ShopContext";
+import Title from "../components/Title";
+import ProductCard from "../components/ProductCard";
+import { useLocation } from "react-router-dom";
+import useApi from "../hooks/api";
+import ErrorComponent from "../components/utils/ErrorComponent";
+import Loader from "../components/utils/Loader";
+
+const fetchProducts = async (queryParams) => {
+  const api = useApi();
+  const res = await api.post(
+    `/product/search-products?${queryParams.toString()}`
+  );
+  return res.data.data.products;
+};
+
+const Products = () => {
+  // const { products, search, showSearch } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [sortType, setSortType] = useState("relevant");
 
+  const [products, setProducts] = useState();
+  const location = useLocation();
+  // const [queryParams, setQueryParams] = useState(
+  //   new URLSearchParams(location.search)
+  // );
+
   const toggleCategory = (e) => {
-    if (category.includes(e.target.value)) {
-      setCategory((prev) => prev.filter((item) => item !== e.target.value));
-    } else {
-      setCategory((prev) => [...prev, e.target.value]);
-    }
+    // if (category.includes(e.target.value)) {
+    //   setCategory((prev) => prev.filter((item) => item !== e.target.value));
+    // } else {
+    //   setCategory((prev) => [...prev, e.target.value]);
+    // }
   };
 
   const toggleSubCategory = (e) => {
-    if (subCategory.includes(e.target.value)) {
-      setSubCategory((prev) => prev.filter((item) => item !== e.target.value));
-    } else {
-      setSubCategory((prev) => [...prev, e.target.value]);
-    }
+    // if (subCategory.includes(e.target.value)) {
+    //   setSubCategory((prev) => prev.filter((item) => item !== e.target.value));
+    // } else {
+    //   setSubCategory((prev) => [...prev, e.target.value]);
+    // }
   };
 
   const applyFilter = () => {
-    let productsCopy = products.slice();
-
-    if (showSearch && search) {
-      productsCopy = productsCopy.filter((item) =>
-        item.name.toLowerCase().includes(search.toLowerCase())
-      );
-    }
-
-    if (category.length > 0) {
-      productsCopy = productsCopy.filter((item) =>
-        category.includes(item.category)
-      );
-    }
-    if (subCategory.length > 0) {
-      productsCopy = productsCopy.filter((item) =>
-        subCategory.includes(item.subCategory)
-      );
-    }
-
-    setFilterProducts(productsCopy);
+    //   let productsCopy = products.slice();
+    //   if (showSearch && search) {
+    //     productsCopy = productsCopy.filter((item) =>
+    //       item.name.toLowerCase().includes(search.toLowerCase())
+    //     );
+    //   }
+    //   if (category.length > 0) {
+    //     productsCopy = productsCopy.filter((item) =>
+    //       category.includes(item.category)
+    //     );
+    //   }
+    //   if (subCategory.length > 0) {
+    //     productsCopy = productsCopy.filter((item) =>
+    //       subCategory.includes(item.subCategory)
+    //     );
+    //   }
+    //   setFilterfProducts(productsCopy);
   };
 
   const sortProduct = () => {
-    let fpCopy = filterProducts.slice();
-
-    switch (sortType) {
-      case "low-high":
-        setFilterProducts(fpCopy.sort((a, b) => a.price - b.price));
-        break;
-      case "high-low":
-        setFilterProducts(fpCopy.sort((a, b) => b.price - a.price));
-        break;
-      default:
-        applyFilter();
-        break;
-    }
+    // let fpCopy = filterProducts.slice();
+    // switch (sortType) {
+    //   case "low-high":
+    //     setFilterProducts(fpCopy.sort((a, b) => a.price - b.price));
+    //     break;
+    //   case "high-low":
+    //     setFilterProducts(fpCopy.sort((a, b) => b.price - a.price));
+    //     break;
+    //   default:
+    //     applyFilter();
+    //     break;
+    // }
   };
 
   const clearFilters = () => {
-    setCategory([]);
-    setSubCategory([]);
+    // setCategory([]);
+    // setSubCategory([]);
   };
 
-  useEffect(() => {
-    applyFilter();
-  }, [category, subCategory, search, showSearch]);
+  // useEffect(() => {
+  // applyFilter();
+  // }, [category, subCategory, search, showSearch]);
 
   useEffect(() => {
-    sortProduct();
+    // sortProduct();
   }, [sortType]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        // setQueryParams(new URLSearchParams(location.search));
+        const products = await fetchProducts(
+          new URLSearchParams(location.search)
+        );
+        setProducts(products);
+      } catch (error) {
+        setProducts(null);
+      }
+    })();
+  }, [location.search]);
 
   return (
     <div className="flex flex-col gap-1 pt-10 p-5 border-t sm:flex-row sm:gap-10">
@@ -200,20 +228,24 @@ const Collection = () => {
           </select>
         </div>
         {/* Map Products */}
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
-          {/* {filterProducts.map((item, index) => (
-            <ProductCard
-              key={index}
-              id={item._id}
-              name={item.name}
-              image={item.image}
-              price={item.price}
-            />
-          ))} */}
-        </div>
+        {products === undefined ? (
+          <Loader className="mt-20 text-5xl text-gray-800 flex justify-center items-center w-full" />
+        ) : products === null ? (
+          <ErrorComponent />
+        ) : products.length > 0 ? (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
+            {products.map((product, index) => (
+              <ProductCard key={index} product={product} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-gray-600 font-light text-3xl text-center">
+            No Products found
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default Collection;
+export default Products;
