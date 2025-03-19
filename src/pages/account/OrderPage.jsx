@@ -94,6 +94,7 @@ const ordersData = {
 
 const OrderPage = () => {
   const [activeTab, setActiveTab] = useState("shipping");
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   return (
     <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 lg:ml-24">
@@ -172,7 +173,10 @@ const OrderPage = () => {
                   <p className="font-semibold text-[10px] sm:text-sm">
                     ₹ {order.total.toLocaleString()}
                   </p>
-                  <button className="bg-black text-white text-[9px] sm:text-sm px-3 py-1 rounded">
+                  <button
+                    className="btn-fill"
+                    onClick={() => setSelectedOrder(order)}
+                  >
                     Details
                   </button>
                 </div>
@@ -181,6 +185,48 @@ const OrderPage = () => {
           </div>
         )}
       </div>
+
+      {/* Order Details Modal */}
+      {selectedOrder && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="bg-white p-4 w-full max-w-md">
+            {/* Modal Header */}
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Order Details</h3>
+              <button onClick={() => setSelectedOrder(null)} className="text-gray-500">
+                ✖
+              </button>
+            </div>
+
+            {/* Order Information */}
+            <p className="text-gray-600 text-sm">Order ID: {selectedOrder.id}</p>
+            <p className="text-gray-600 text-sm">From: {selectedOrder.from}</p>
+            <p className="text-gray-600 text-sm">To: {selectedOrder.to}</p>
+            <p className="text-gray-600 text-sm">Estimated Arrival: {selectedOrder.estimatedArrival}</p>
+            <p className="text-gray-600 text-sm">Status: {selectedOrder.status}</p>
+
+            {/* Item List */}
+            <div className="mt-4 space-y-2 max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
+              {selectedOrder.items.map((item, index) => (
+                <div key={index} className="flex items-center gap-3 border-b pb-2">
+                  <div className="w-12 h-12 bg-gray-200 flex-shrink-0"></div>
+                  <div className="flex-1">
+                    <p className="font-medium">{item.name}</p>
+                    <p className="text-gray-500 text-xs">Size: {item.size}</p>
+                    <p className="font-semibold">₹ {item.price.toLocaleString()}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Order Summary */}
+            <div className="mt-4 border-t pt-2">
+              <p className="font-semibold text-sm">Total: ₹ {selectedOrder.total.toLocaleString()}</p>
+             
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
