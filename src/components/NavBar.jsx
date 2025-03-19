@@ -11,6 +11,7 @@ import { ShopContext } from "../context/ShopContext";
 import { useAuth } from "../context/AuthContext";
 import Loader from "./utils/Loader";
 import FormInput from "./utils/FormInput";
+import SearchBar from "./SearchBar";
 
 const NavBar = () => {
   const [visible, setVisible] = useState(false);
@@ -19,19 +20,16 @@ const NavBar = () => {
   const { auth, isLoading } = useAuth();
 
   return (
-    <div className="flex items-center justify-between py-5 p-5 font-medium">
+    <div className="flex items-center justify-between px-2 p-2 font-medium md:px-5 md:p-5">
       <Link to="/">
         <img src={assets.logo} className="w-36" alt="Trendify" />
       </Link>
       {/* Search bar */}
-      <div className="relative w-1/2">
-        <FormInput className="w-full" placeholder="Search..." />
-        <CiSearch className="text-xl absolute z-10 right-4 top-1/2 -translate-y-1/2" />
-      </div>
-      <div className="flex items-center gap-6">
+      <SearchBar className="w-1/2 hidden lg:block" />
+      <div className="flex items-center gap-2 lg:gap-6">
         <NavLink
           to="/registration"
-          className="flex items-center gap-2 border border-gray-400 px-4 py-2 hover:bg-gray-100"
+          className="flex items-center gap-2 border border-gray-400 hover:bg-gray-100 px-4 py-2"
         >
           <p>Become a Seller?</p>
         </NavLink>
@@ -57,16 +55,16 @@ const NavBar = () => {
             </p>
           </Link>
         )}
-        <span
+        {/* <span
           onClick={() => setVisible(true)}
           className="text-xl cursor-pointer md:hidden"
         >
           <HiOutlineMenuAlt3 />
-        </span>
+        </span> */}
       </div>
 
       {/* INFO: Sidbar menu for smaller screens */}
-      <div
+      {/* <div
         className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${
           visible ? "w-full" : "w-0"
         }`}
@@ -108,7 +106,7 @@ const NavBar = () => {
             CONTACT
           </NavLink>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
