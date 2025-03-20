@@ -8,8 +8,9 @@ import { useLocation } from "react-router-dom";
 import useApi from "../hooks/api";
 import ErrorComponent from "../components/utils/ErrorComponent";
 import Loader from "../components/utils/Loader";
+import FormInput from "../components/utils/FormInput";
 
-const fetchProducts = async (queryParams) => {
+const fetchProducts = async (queryParams, filters) => {
   const api = useApi();
   const res = await api.post(
     `/product/search-products?${queryParams.toString()}`
@@ -17,19 +18,24 @@ const fetchProducts = async (queryParams) => {
   return res.data.data.products;
 };
 
+// default filter options
+const defaultFilters = {
+  minPrice: "",
+  maxPrice: "",
+  priceSort: "high-low",
+};
+
 const Products = () => {
   // const { products, search, showSearch } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
-  const [filterProducts, setFilterProducts] = useState([]);
-  const [category, setCategory] = useState([]);
-  const [subCategory, setSubCategory] = useState([]);
+  // const [filterProducts, setFilterProducts] = useState([]);
+  // const [category, setCategory] = useState([]);
+  // const [subCategory, setSubCategory] = useState([]);
   const [sortType, setSortType] = useState("relevant");
 
   const [products, setProducts] = useState();
   const location = useLocation();
-  // const [queryParams, setQueryParams] = useState(
-  //   new URLSearchParams(location.search)
-  // );
+  const [filters, setFilters] = useState(defaultFilters);
 
   const toggleCategory = (e) => {
     // if (category.includes(e.target.value)) {
@@ -47,26 +53,6 @@ const Products = () => {
     // }
   };
 
-  const applyFilter = () => {
-    //   let productsCopy = products.slice();
-    //   if (showSearch && search) {
-    //     productsCopy = productsCopy.filter((item) =>
-    //       item.name.toLowerCase().includes(search.toLowerCase())
-    //     );
-    //   }
-    //   if (category.length > 0) {
-    //     productsCopy = productsCopy.filter((item) =>
-    //       category.includes(item.category)
-    //     );
-    //   }
-    //   if (subCategory.length > 0) {
-    //     productsCopy = productsCopy.filter((item) =>
-    //       subCategory.includes(item.subCategory)
-    //     );
-    //   }
-    //   setFilterfProducts(productsCopy);
-  };
-
   const sortProduct = () => {
     // let fpCopy = filterProducts.slice();
     // switch (sortType) {
@@ -82,18 +68,31 @@ const Products = () => {
     // }
   };
 
-  const clearFilters = () => {
-    // setCategory([]);
-    // setSubCategory([]);
+  const resetFilters = () => {
+    setFilters(defaultFilters);
+  };
+
+  const applyFilters = () => {
+    (async () => {
+      try {
+        const products = await fetchProducts(
+          new URLSearchParams(location.search),
+          filters
+        );
+        setProducts(products);
+      } catch (error) {
+        setProducts(null);
+      }
+    })();
   };
 
   // useEffect(() => {
   // applyFilter();
   // }, [category, subCategory, search, showSearch]);
 
-  useEffect(() => {
-    // sortProduct();
-  }, [sortType]);
+  // useEffect(() => {
+  //   // sortProduct();
+  // }, [sortType]);
 
   useEffect(() => {
     (async () => {
@@ -110,123 +109,113 @@ const Products = () => {
   }, [location.search]);
 
   return (
-    <div className="flex flex-col gap-1 pt-10 p-5 border-t sm:flex-row sm:gap-10">
+    <div className="flex flex-col gap-1 pt-10 p-5 border-t lg:flex-row lg:gap-10">
       {/* Filter Options */}
-      <div className="min-w-60">
+      <div className="min-w-60 pb-6">
         <p
           onClick={() => setShowFilter(!showFilter)}
           className="flex items-center gap-2 my-2 text-xl cursor-pointer"
         >
-          FILTERS
+          OPTIONS
           <IoMdArrowDropdown
-            className={`text-lg md:hidden ${showFilter ? "" : "-rotate-90"}`}
+            className={`text-lg lg:hidden ${showFilter ? "" : "-rotate-90"}`}
           />
         </p>
-        {/* Category Filters */}
         <div
-          className={`border border-gray-300 pl-5 py-3 mb-5 mt-6 ${
-            showFilter ? "" : "hidden"
-          } sm:block`}
+          className={`flex-col gap-8  border border-gray-300 p-5 mb-5 w-11/12 mx-auto ${
+            showFilter ? "flex" : "hidden"
+          } lg:flex`}
         >
-          <p className="mb-3 text-sm font-medium">CATEGORIES</p>
-          <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
-            <label className="flex gap-2 cursor-pointer">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Electronics"}
-                onChange={toggleCategory}
-                checked={category.includes("Electronics")}
-              />
-              Electronics
-            </label>
-            <label className="flex gap-2 cursor-pointer">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Cloths"}
-                onChange={toggleCategory}
-                checked={category.includes("Cloths")}
-              />
-              Coths
-            </label>
-            <label className="flex gap-2 cursor-pointer">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Furniture"}
-                onChange={toggleCategory}
-                checked={category.includes("Furniture")}
-              />
-              Furnitures
-            </label>
+          {/* Price Filters */}
+          <div className="flex flex-col gap-2">
+            <p className="mb-3 text-sm font-medium">PRICE FILTER</p>
+            <div className="w-full flex flex-col gap-4 text-sm font-light text-gray-800">
+              <label
+                htmlFor="minPrice"
+                className="flex justify-between items-center gap-2"
+              >
+                Min.
+                <FormInput
+                  id="minPrice"
+                  type="tel"
+                  className="w-full"
+                  placeholder="₹"
+                  value={filters.minPrice}
+                  onChange={(e) => {
+                    if (/^[0-9]*$/.test(e.target.value))
+                      setFilters((prev) => ({
+                        ...prev,
+                        minPrice: e.target.value,
+                      }));
+                  }}
+                />
+              </label>
+              <label
+                htmlFor="maxPrice"
+                className="flex justify-between items-center gap-2"
+              >
+                Max.
+                <FormInput
+                  id="maxPrice"
+                  type="tel"
+                  className="w-full"
+                  placeholder="₹"
+                  value={filters.maxPrice}
+                  onChange={(e) => {
+                    if (/^[0-9]*$/.test(e.target.value))
+                      setFilters((prev) => ({
+                        ...prev,
+                        maxPrice: e.target.value,
+                      }));
+                  }}
+                />
+              </label>
+            </div>
+          </div>
+          {/* Sort price */}
+          <div className="flex flex-col gap-2">
+            <p className="mb-3 text-sm font-medium">SORT BY PRICE</p>
+            <div className="w-full flex flex-col gap-4 text-sm font-light text-gray-800">
+              <select
+                value={filters.priceSort}
+                onChange={(e) =>
+                  setFilters((prev) => ({ ...prev, priceSort: e.target.value }))
+                }
+                className="padding border-2 border-gray-300"
+              >
+                <option value="low-high">Sort by: Low to High</option>
+                <option value="high-low">Sort by: High to Low</option>
+              </select>
+            </div>
           </div>
         </div>
-        {/* Sub Category Filters */}
-        {/* <div
-          className={`border border-gray-300 pl-5 py-3 my-5 ${
-            showFilter ? "" : "hidden"
-          } sm:block`}
-        >
-          <p className="mb-3 text-sm font-medium">TYPES</p>
-          <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
-            <label className="flex gap-2 cursor-pointer">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Topwear"}
-                onChange={toggleSubCategory}
-                checked={subCategory.includes("Topwear")}
-              />
-              Topwear
-            </label>
-            <label className="flex gap-2 cursor-pointer">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Bottomwear"}
-                onChange={toggleSubCategory}
-                checked={subCategory.includes("Bottomwear")}
-              />
-              Bottomwear
-            </label>
-            <label className="flex gap-2 cursor-pointer">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Winterwear"}
-                onChange={toggleSubCategory}
-                checked={subCategory.includes("Winterwear")}
-              />
-              Winterwear
-            </label>
-          </div>
-        </div> */}
-        {/* Clear Filters Button */}
-        <button
-          className={`px-4 py-2 mt-1 text-white bg-black rounded hover:bg-gray-900 ${
-            showFilter ? "block" : "hidden"
-          } sm:block`}
-          onClick={clearFilters}
-        >
-          Clear Filters
-        </button>
+        {/* Reset & Apply filter */}
+        <div className="flex gap-2 justify-center items-center md:flex-row">
+          <button
+            className={`btn-outline ${
+              showFilter ? "block" : "hidden"
+            } lg:block`}
+            onClick={resetFilters}
+          >
+            Reset Filters
+          </button>
+          <button
+            className={`btn-fill ${showFilter ? "block" : "hidden"} lg:block`}
+            onClick={applyFilters}
+          >
+            Apply Filters
+          </button>
+        </div>
       </div>
 
       {/* View Product Items */}
       <div className="flex-1">
-        <div className="flex justify-between mb-4 text-base sm:text-2xl">
-          <Title text1={"ALL"} text2={"PRODUCTS"} />
-          {/* Product Sort */}
-          <select
-            onChange={(e) => setSortType(e.target.value)}
-            className="px-2 text-sm border-2 border-gray-300"
-          >
-            <option value="relevant">Sort by: Relevant</option>
-            <option value="low-high">Sort by: Low to High</option>
-            <option value="high-low">Sort by: High to Low</option>
-          </select>
-        </div>
+        {products?.length > 0 && (
+          <div className="text-xl text-gray-600">
+            <span className="font-bold text-2xl mr-2">{products.length}</span>
+            results found
+          </div>
+        )}
         {/* Map Products */}
         {products === undefined ? (
           <Loader className="mt-20 text-5xl text-gray-800 flex justify-center items-center w-full" />
