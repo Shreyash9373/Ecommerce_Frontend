@@ -8,6 +8,7 @@ import ErrorComponent from "./utils/ErrorComponent";
 const fetchFeaturedProducts = async () => {
   const api = useApi();
   const res = await api.get("product/get-approvedProducts");
+  console.log(": : ", res);
   return res.data.data;
 };
 
@@ -18,7 +19,7 @@ const FeaturedProducts = () => {
     try {
       (async () => {
         const fProducts = await fetchFeaturedProducts();
-        // console.log(fProducts);
+        console.log("fpo:", fProducts);
         setFeaturedProducts(fProducts);
       })();
     } catch (error) {

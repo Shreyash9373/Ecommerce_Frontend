@@ -3,7 +3,7 @@ import React from "react";
 
 const useApi = () => {
   const api = axios.create({
-    baseURL: "http://localhost:4000/api/v1",
+    baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/v1/`,
     headers: {
       "Content-Type": "application/json",
     },
