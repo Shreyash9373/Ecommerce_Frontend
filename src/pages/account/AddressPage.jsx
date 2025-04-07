@@ -3,6 +3,7 @@ import { IoAdd } from "react-icons/io5";
 
 import Modal from "../../components/utils/Modal";
 import FormInput from "../../components/utils/FormInput";
+import Breadcrumbs from "../../components/Breadcrumbs";
 
 const addrs = [
   {
@@ -43,6 +44,8 @@ const AddressPage = () => {
   return (
     <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 md:ml-12 lg:ml-24">
       {/* heading */}
+      <Breadcrumbs />
+
       <div className="w-11/12 mx-auto flex flex-col justify-center lg:[width:var(--lg-element-width)]">
         <h2 className="text-xl font-semibold md:text-2xl">Address</h2>
         <span className="text-gray-600 text-sm">
@@ -62,10 +65,7 @@ const AddressPage = () => {
         </button>
         {/* address */}
         {addrs.map((addr, index) => (
-          <div
-            key={index}
-            className="shadow-xl p-4 border border-gray-400 flex flex-col gap-4"
-          >
+          <div key={index} className="shadow-xl p-4 border border-gray-400 flex flex-col gap-4">
             {/* details */}
             <div className="flex flex-col md:gap-1">
               <span className="text-sm md:text-lg">{addr.street}</span>
@@ -89,9 +89,7 @@ const AddressPage = () => {
               >
                 Edit
               </span>
-              <span className="padding underline cursor-pointer hover:text-gray-800">
-                Remove
-              </span>
+              <span className="padding underline cursor-pointer hover:text-gray-800">Remove</span>
             </div>
           </div>
         ))}

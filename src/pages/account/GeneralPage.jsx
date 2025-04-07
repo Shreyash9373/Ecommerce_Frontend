@@ -1,10 +1,13 @@
 import React from "react";
 import FormInput from "../../components/utils/FormInput";
+import Breadcrumbs from "../../components/Breadcrumbs";
 
 const GeneralPage = () => {
   return (
     <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 md:ml-12 lg:ml-24">
       {/* heading */}
+      <Breadcrumbs />
+
       <div className="w-11/12 flex flex-col justify-center lg:[width:var(--lg-element-width)]">
         <h2 className="text-xl font-semibold md:text-2xl">General</h2>
         <span className="text-gray-600 text-sm">
@@ -18,33 +21,21 @@ const GeneralPage = () => {
           <label className="md:padding md:w-1/3" htmlFor="name">
             Name
           </label>
-          <FormInput
-            className="rounded-md md:w-full"
-            name="name"
-            placeholder="New name"
-          />
+          <FormInput className="rounded-md md:w-full" name="name" placeholder="New name" />
         </div>
         {/* email */}
         <div className="flex flex-col gap-1 md:flex-row">
           <label className="md:padding md:w-1/3" htmlFor="email">
             Email
           </label>
-          <FormInput
-            className="rounded-md md:w-full"
-            name="email"
-            placeholder="New email"
-          />
+          <FormInput className="rounded-md md:w-full" name="email" placeholder="New email" />
         </div>
         {/* mobile */}
         <div className="flex flex-col gap-1 md:flex-row">
           <label className="md:padding md:w-1/3" htmlFor="mobile">
             Mobile
           </label>
-          <FormInput
-            className="rounded-md md:w-full"
-            name="mobile"
-            placeholder="New mobile"
-          />
+          <FormInput className="rounded-md md:w-full" name="mobile" placeholder="New mobile" />
         </div>
       </div>
       {/* buttons */}
