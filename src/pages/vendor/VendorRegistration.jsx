@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const VendorRegistration = () => {
   const {
@@ -43,6 +44,7 @@ const VendorRegistration = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      {/* <Link to="/">Go to Home Page</Link> */}
       <div className="max-w-4xl w-full p-8 bg-white shadow-lg rounded-lg">
         <h2 className="text-2xl font-semibold text-center mb-6">Register as a Seller</h2>
         <form className="space-y-6 " onSubmit={handleSubmit(onSubmit)}>

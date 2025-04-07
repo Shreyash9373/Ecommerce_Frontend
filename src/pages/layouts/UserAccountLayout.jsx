@@ -13,6 +13,7 @@ const UserAccountLayout = () => {
   return (
     <div>
       {/* mobile sidebar */}
+
       <div
         className={`${
           menuOpen ? "-translate-x-0" : "-translate-x-full"
@@ -28,32 +29,16 @@ const UserAccountLayout = () => {
           </span>
         </div>
         <div className="flex flex-col gap-1">
-          <NavLink
-            onClick={handleMenuToggle}
-            to="general"
-            className={linkClasses}
-          >
+          <NavLink onClick={handleMenuToggle} to="general" className={linkClasses}>
             General
           </NavLink>
-          <NavLink
-            onClick={handleMenuToggle}
-            to="password"
-            className={linkClasses}
-          >
+          <NavLink onClick={handleMenuToggle} to="password" className={linkClasses}>
             Password
           </NavLink>
-          <NavLink
-            onClick={handleMenuToggle}
-            to="address"
-            className={linkClasses}
-          >
+          <NavLink onClick={handleMenuToggle} to="address" className={linkClasses}>
             Address
           </NavLink>
-          <NavLink
-            onClick={handleMenuToggle}
-            to="orders"
-            className={linkClasses}
-          >
+          <NavLink onClick={handleMenuToggle} to="orders" className={linkClasses}>
             Orders
           </NavLink>
         </div>
@@ -61,12 +46,11 @@ const UserAccountLayout = () => {
 
       <div className="[--y-padding:2.5rem] py-10 flex min-h-[95vh] w-11/12 mx-auto md:px-2 lg:px-4 xl:px-20">
         {/* hamburger button */}
-        <IoMenu
-          onClick={handleMenuToggle}
-          className="text-2xl mr-4 text-gray-600 md:hidden"
-        />
+
+        <IoMenu onClick={handleMenuToggle} className="text-2xl mr-4 text-gray-600 md:hidden" />
 
         {/* desktop sidebar */}
+
         <div className="hidden flex-col gap-3 py-[--y-padding] md:flex">
           <h1 className="text-3xl text-gray-800">Settings</h1>
           <div className="flex flex-col gap-2">

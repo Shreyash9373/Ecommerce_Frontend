@@ -28,7 +28,7 @@ const App = () => {
       <ToastContainer />
       <AuthContextProvider>
         <Routes>
-          <Route path="/user/account" element={<UserAccountLayout />}>
+          <Route path="/account" element={<UserAccountLayout />}>
             <Route index element={<Navigate to="general" />} />
             <Route path="general" element={<GeneralPage />} />
             <Route path="password" element={<PasswordPage />} />

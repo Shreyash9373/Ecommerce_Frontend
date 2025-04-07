@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Breadcrumbs from "../../components/Breadcrumbs";
 
 const ordersData = {
   shipping: [
@@ -97,8 +98,10 @@ const OrderPage = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   return (
-    <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 lg:ml-24">
+    <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 md:ml-12 lg:ml-24">
       {/* Header */}
+      <Breadcrumbs />
+
       <div className="w-full text-left">
         <h2 className="text-lg font-semibold sm:text-xl">Orders</h2>
         <span className="text-gray-600 text-xs sm:text-sm">All of your orders.</span>
@@ -152,10 +155,7 @@ const OrderPage = () => {
                 {/* Order Items (Scrollable) */}
                 <div className="mt-1 space-y-1 max-h-28 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
                   {order.items.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-2 border-b py-1 flex-wrap"
-                    >
+                    <div key={index} className="flex items-center gap-2 border-b py-1 flex-wrap">
                       <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 flex-shrink-0"></div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate text-[9px] sm:text-sm">{item.name}</p>
@@ -173,10 +173,7 @@ const OrderPage = () => {
                   <p className="font-semibold text-[10px] sm:text-sm">
                     ₹ {order.total.toLocaleString()}
                   </p>
-                  <button
-                    className="btn-fill"
-                    onClick={() => setSelectedOrder(order)}
-                  >
+                  <button className="btn-fill" onClick={() => setSelectedOrder(order)}>
                     Details
                   </button>
                 </div>
@@ -202,7 +199,9 @@ const OrderPage = () => {
             <p className="text-gray-600 text-sm">Order ID: {selectedOrder.id}</p>
             <p className="text-gray-600 text-sm">From: {selectedOrder.from}</p>
             <p className="text-gray-600 text-sm">To: {selectedOrder.to}</p>
-            <p className="text-gray-600 text-sm">Estimated Arrival: {selectedOrder.estimatedArrival}</p>
+            <p className="text-gray-600 text-sm">
+              Estimated Arrival: {selectedOrder.estimatedArrival}
+            </p>
             <p className="text-gray-600 text-sm">Status: {selectedOrder.status}</p>
 
             {/* Item List */}
@@ -221,8 +220,9 @@ const OrderPage = () => {
 
             {/* Order Summary */}
             <div className="mt-4 border-t pt-2">
-              <p className="font-semibold text-sm">Total: ₹ {selectedOrder.total.toLocaleString()}</p>
-             
+              <p className="font-semibold text-sm">
+                Total: ₹ {selectedOrder.total.toLocaleString()}
+              </p>
             </div>
           </div>
         </div>
