@@ -37,7 +37,7 @@ const NavBar = () => {
         {isLoading ? (
           <Loader className="text-2xl text-gray-800" />
         ) : auth.id ? (
-          <Link to="/user/account">
+          <Link to="/account">
             <VscAccount className="text-2xl cursor-pointer" />
           </Link>
         ) : (
