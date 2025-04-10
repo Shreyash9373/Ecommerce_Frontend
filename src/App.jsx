@@ -12,7 +12,7 @@ import Cart from "./pages/Cart";
 import SigningPage from "./pages/SigningPage";
 import PlaceOrder from "./pages/PlaceOrder";
 import Orders from "./pages/Orders";
-import { AuthContextProvider } from "./context/AuthContext";
+import { AuthProvider } from './context/AuthContext';
 import UserAccountLayout from "./pages/layouts/UserAccountLayout";
 import MainLayout from "./pages/layouts/MainLayout";
 import GeneralPage from "./pages/account/GeneralPage";
@@ -26,7 +26,7 @@ const App = () => {
     // <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
     <div>
       <ToastContainer />
-      <AuthContextProvider>
+      <AuthProvider>
         <Routes>
           <Route path="/account" element={<UserAccountLayout />}>
             <Route index element={<Navigate to="general" />} />
@@ -55,7 +55,7 @@ const App = () => {
 
           <Route path="/registration" element={<VendorRegistration />} />
         </Routes>
-      </AuthContextProvider>
+      </AuthProvider>
     </div>
   );
 };

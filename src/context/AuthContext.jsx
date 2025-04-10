@@ -1,40 +1,40 @@
+// context/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
-export const AuthContextProvider = ({ children }) => {
-  const [auth, setAuth] = useState({
-    id: null,
-    name: null,
-    isLoggedIn: null,
-  });
-  const [isLoading, setIsLoading] = useState(false);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
+
+  const fetchUser = async () => {
+    try {
+      const { data } = await axios.get("/api/v1/user/get-user", {
+        withCredentials: true,
+      });
+      setUser(data.user);
+    } catch (error) {
+      setUser(null);
+    } finally {
+      setLoadingUser(false);
+    }
+  };
+
+  const logout = async () => {
+    await axios.post("/api/v1/user/logout", {}, { withCredentials: true });
+    setUser(null);
+  };
 
   useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        await new Promise((resolve, reject) => setTimeout(resolve, 2000));
-        setAuth({
-          id: "abc123",
-        });
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
-    })();
+    fetchUser();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth, isLoading }}>
+    <AuthContext.Provider value={{ user, setUser, logout, loadingUser }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined)
-    throw new Error("Cannot use 'useAuth' hook outside 'AuthContextProvider'");
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);
