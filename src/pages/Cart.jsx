@@ -3,17 +3,24 @@ import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import useApi from "../hooks/api";
 import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi();
   const navigate = useNavigate();
+  const { user, loadingUser } = useAuth();
 
   const delivery_fee = 40;
   const discount = 0;
 
   useEffect(() => {
+    if (!loadingUser && !user) {
+      setLoading(false);
+      return;
+    }
+
     const fetchCart = async () => {
       try {
         const response = await api.get("cart/get-Cart");
@@ -27,8 +34,11 @@ const Cart = () => {
         setLoading(false);
       }
     };
-    fetchCart();
-  }, []);
+    
+    if (user) {
+      fetchCart();
+    }
+  }, [user, loadingUser]);
 
   const handleQuantityChange = async (productId, newQuantity) => {
     try {
@@ -70,7 +80,35 @@ const Cart = () => {
   );
   const cartTotal = cartSubtotal + delivery_fee - discount;
 
-  if (loading) return <div className="p-8 text-center">Loading cart...</div>;
+  if (loading || loadingUser) {
+    return <div className="p-8 text-center">Loading cart...</div>;
+  }
+
+  if (!user) {
+    return (
+      <div className="p-4 sm:p-8 bg-transparent min-h-screen flex flex-col items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">Your Cart</h2>
+          <p className="text-gray-600 mb-6">Please login to view your cart items</p>
+          <button
+            onClick={() => navigate("/login", { state: { from: "/cart" } })}
+            className="btn-fill w-full sm:w-auto"
+          >
+            Login to Continue
+          </button>
+          <p className="mt-4 text-sm text-gray-500">
+            Don't have an account?{" "}
+            <span 
+              className="text-blue-600 cursor-pointer hover:underline"
+              onClick={() => navigate("/login")}
+            >
+              Sign up
+            </span>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 sm:p-8 bg-gray-100 min-h-screen">

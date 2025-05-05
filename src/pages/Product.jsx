@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import useApi from "../hooks/api";
+import { useAuth } from "../context/AuthContext";
 import ErrorComponent from "../components/utils/ErrorComponent";
 import Modal from "../components/utils/Modal";
 import { toast } from "react-toastify";
 
 const Product = () => {
   const { productId } = useParams();
+  const { user, loadingUser } = useAuth();
   const [selectedImage, setSelectedImage] = useState("");
   const [productDetails, setProductDetails] = useState();
   const [imageModalOpen, setImageModalOpen] = useState(false);
@@ -41,9 +43,16 @@ const Product = () => {
   };
 
   const handleAddToCart = async () => {
-    if (!localStorage.getItem('accessToken')) {
+    if (loadingUser) {
+      toast.info("Please wait while we verify your session");
+      return;
+    }
+
+    if (!user) {
       toast.error("Please login to add items to cart");
-      navigate("/login");
+      navigate("/login", { 
+        state: { from: `/product/${productId}` } 
+      });
       return;
     }
 
@@ -171,7 +180,7 @@ const Product = () => {
           <button
             onClick={handleAddToCart}
             className="btn-fill w-full sm:w-auto"
-            disabled={loading.cart}
+            disabled={loading.cart || loadingUser}
           >
             {loading.cart ? "Adding..." : "ADD TO CART"}
           </button>
