@@ -3,6 +3,7 @@ import FormInput from "../components/utils/FormInput";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const SigningPage = () => {
   const [currentState, setCurrentState] = useState("Sign Up");
@@ -13,7 +14,7 @@ const SigningPage = () => {
     phone: "",
     name: "",
   });
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
@@ -25,48 +26,79 @@ const SigningPage = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const validateForm = () => {
+    if (currentState === "Sign Up") {
+      if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword || !formData.phone) {
+        toast.error("All fields are required");
+        return false;
+      }
+      if (formData.password !== formData.confirmPassword) {
+        toast.error("Passwords do not match");
+        return false;
+      }
+      if (formData.password.length < 6) {
+        toast.error("Password must be at least 6 characters");
+        return false;
+      }
+    } else {
+      if (!formData.email || !formData.password) {
+        toast.error("Email and password are required");
+        return false;
+      }
+    }
+    return true;
+  };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    const { email, password, confirmPassword, name, phone } = formData;
+    if (!validateForm()) return;
+
+    setLoading(true);
     const backendUrl = import.meta.env.VITE_BACKEND_URI;
 
     try {
       if (currentState === "Sign Up") {
-        if (!email || !password || !confirmPassword || !name || !phone) {
-          return alert("All fields are required!");
-        }
-        if (password !== confirmPassword) {
-          return alert("Passwords do not match!");
-        }
-
         const res = await axios.post(
           `${backendUrl}/api/v1/user/register`,
-          { email, password, name, phone },
+          formData,
           { withCredentials: true }
         );
 
         if (res.status === 200 || res.status === 201) {
-          alert("Registration successful! Please sign in.");
+          toast.success("Registration successful! Please sign in.");
           setCurrentState("Sign In");
+          // Clear password fields after successful registration
+          setFormData(prev => ({ ...prev, password: "", confirmPassword: "" }));
         }
       } else {
         const res = await axios.post(
           `${backendUrl}/api/v1/user/login`,
-          { email, password },
-          { withCredentials: true }
+          { email: formData.email, password: formData.password },
+          { 
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
         );
 
-        if (res?.data?.accesstoken || res?.data?.accessToken) {
-          setUser(res.data.user);
-          alert("Login successful!");
+        if (res.data?.data?.accessToken) {
+          localStorage.setItem('accessToken', res.data.data.accessToken);
+          setUser(res.data.data.user);
+          toast.success("Login successful!");
           navigate("/");
         } else {
-          alert("Login failed. No token returned.");
+          throw new Error("No token received");
         }
       }
     } catch (error) {
-      console.error("FULL ERROR", error);
-      alert(error.response?.data?.message || error.message || "Something went wrong");
+      console.error("Authentication Error:", error);
+      const errorMessage = error.response?.data?.message || 
+                         error.message || 
+                         "Something went wrong. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,6 +120,7 @@ const SigningPage = () => {
             className="w-full rounded-sm"
             value={formData.name}
             onChange={handleChange}
+            required
           />
           <FormInput
             name="phone"
@@ -95,6 +128,7 @@ const SigningPage = () => {
             className="w-full rounded-sm"
             value={formData.phone}
             onChange={handleChange}
+            required
           />
         </>
       )}
@@ -106,6 +140,7 @@ const SigningPage = () => {
         className="w-full rounded-sm"
         value={formData.email}
         onChange={handleChange}
+        required
       />
       <FormInput
         type="password"
@@ -114,6 +149,8 @@ const SigningPage = () => {
         className="w-full rounded-sm"
         value={formData.password}
         onChange={handleChange}
+        required
+        minLength={6}
       />
 
       {currentState === "Sign Up" && (
@@ -124,6 +161,8 @@ const SigningPage = () => {
           className="w-full rounded-sm"
           value={formData.confirmPassword}
           onChange={handleChange}
+          required
+          minLength={6}
         />
       )}
 
@@ -132,16 +171,21 @@ const SigningPage = () => {
           {currentState === "Sign In"
             ? "Don't have an account?"
             : "Already have an account!"}
-          <p
+          <button
+            type="button"
             onClick={handleStateToggle}
             className="cursor-pointer underline font-semibold hover:text-gray-600"
           >
             {currentState === "Sign In" ? "Sign up" : "Sign in"}
-          </p>
+          </button>
         </span>
       </div>
-      <button className="btn-fill font-light !px-8" type="submit">
-        {currentState}
+      <button 
+        className="btn-fill font-light !px-8" 
+        type="submit"
+        disabled={loading}
+      >
+        {loading ? "Processing..." : currentState}
       </button>
     </form>
   );
