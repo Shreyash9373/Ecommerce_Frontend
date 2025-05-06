@@ -84,6 +84,8 @@ const PasswordPage = () => {
       {/* heading */}
       <Breadcrumbs />
 
+      <Breadcrumbs />
+
       <div className="w-11/12 flex flex-col justify-center lg:[width:var(--lg-element-width)]">
         <h2 className="text-xl font-semibold md:text-2xl">Password</h2>
         <span className="text-gray-600 text-sm">
