@@ -1,31 +1,37 @@
-import React, { useContext, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { CiSearch } from "react-icons/ci";
+import React, { useState, useContext } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { IoCartOutline } from "react-icons/io5";
 import { VscAccount } from "react-icons/vsc";
-import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { IoMdArrowDropdown } from "react-icons/io";
 
 import { assets } from "../assets/assets";
 import { ShopContext } from "../context/ShopContext";
-import { useAuth } from "../context/AuthContext";
 import Loader from "./utils/Loader";
-import FormInput from "./utils/FormInput";
 import SearchBar from "./SearchBar";
+import { useAuth } from "../context/AuthContext";
 
 const NavBar = () => {
-  const [visible, setVisible] = useState(false);
-  const { setShowSearch, getCartCount } = useContext(ShopContext);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { getCartCount } = useContext(ShopContext);
+  const { user, logout, loadingUser } = useAuth();
+  const navigate = useNavigate();
 
-  const { auth, isLoading } = useAuth();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
 
   return (
-    <div className="flex items-center justify-between px-2 p-2 font-medium md:px-5 md:p-5">
+    <div className="relative flex items-center justify-between px-2 p-2 font-medium md:px-5 md:p-5">
       <Link to="/">
         <img src={assets.logo} className="w-36" alt="Trendify" />
       </Link>
-      {/* Search bar */}
+
       <SearchBar className="w-1/2 hidden lg:block" />
+
       <div className="flex items-center gap-2 lg:gap-6">
         <NavLink
           to="/registration"
@@ -34,79 +40,53 @@ const NavBar = () => {
           <p>Become a Seller?</p>
         </NavLink>
 
-        {isLoading ? (
-          <Loader className="text-2xl text-gray-800" />
-        ) : auth.id ? (
-          <Link to="/account">
-            <VscAccount className="text-2xl cursor-pointer" />
-          </Link>
-        ) : (
-          <Link to="/login" className="min-w-fit btn-outline">
-            Sign in / Sign up
-          </Link>
-        )}
-        {isLoading ? (
+        {loadingUser ? (
           <Loader className="text-2xl text-gray-800" />
         ) : (
-          <Link to="/cart" className="relative">
-            <IoCartOutline className="text-3xl cursor-pointer" />
-            <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
-              {getCartCount()}
-            </p>
-          </Link>
-        )}
-        {/* <span
-          onClick={() => setVisible(true)}
-          className="text-xl cursor-pointer md:hidden"
-        >
-          <HiOutlineMenuAlt3 />
-        </span> */}
-      </div>
-
-      {/* INFO: Sidbar menu for smaller screens */}
-      {/* <div
-        className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${
-          visible ? "w-full" : "w-0"
-        }`}
-      >
-        <div className="flex flex-col text-gray-600">
-          <div
-            onClick={() => setVisible(false)}
-            className="flex items-center gap-4 p-3 cursor-pointer"
-          >
-            <IoMdArrowDropdown className="text-lg rotate-90" />
-            <p>Back</p>
+          <div className="relative">
+            <VscAccount
+              className="text-2xl cursor-pointer"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            />
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white border shadow-md rounded-md z-50">
+                {user ? (
+                  <>
+                    <Link
+                      to="/account"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      My Account
+                    </Link>
+                    <button
+                      className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    Sign in / Sign up
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
-          <NavLink
-            onClick={() => setVisible(false)}
-            className="py-2 pl-6 border"
-            to="/"
-          >
-            HOME
-          </NavLink>
-          <NavLink
-            onClick={() => setVisible(false)}
-            className="py-2 pl-6 border"
-            to="/collection"
-          >
-            COLLECTION
-          </NavLink>
-          <NavLink
-            onClick={() => setVisible(false)}
-            className="py-2 pl-6 border"
-            to="/about"
-          >
-            ABOUT
-          </NavLink>
-          <NavLink
-            onClick={() => setVisible(false)}
-            className="py-2 pl-6 border"
-            to="/contact"
-          >
-            CONTACT
-          </NavLink>
-        </div>
-      </div> */}
+        )}
+
+        <Link to="/cart" className="relative">
+          <IoCartOutline className="text-3xl cursor-pointer" />
+          <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
+            {getCartCount()}
+          </p>
+        </Link>
+      </div>
     </div>
   );
 };
