@@ -34,24 +34,44 @@ const Cart = () => {
         setLoading(false);
       }
     };
-    
+
     if (user) {
       fetchCart();
     }
   }, [user, loadingUser]);
+
+  const processtoCheckout = () => {
+    // Save simplified cart data for confirm order page
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(
+        cartItems.map((item) => ({
+          productId: item.productId._id,
+          name: item.productId.name,
+          price: item.productId.price,
+          quantity: item.quantity,
+        }))
+      )
+    );
+
+    console.log("Click on select address:", cartItems);
+    navigate("/pickAddress");
+  };
 
   const handleQuantityChange = async (productId, newQuantity) => {
     try {
       setLoading(true);
       const response = await api.put("cart/update-itemQuantity", {
         productId,
-        quantity: newQuantity
+        quantity: newQuantity,
       });
-      
+
       if (response.data?.data) {
-        setCartItems(prev => prev.map(item => 
-          item.productId._id === productId ? { ...item, quantity: newQuantity } : item
-        ));
+        setCartItems((prev) =>
+          prev.map((item) =>
+            item.productId._id === productId ? { ...item, quantity: newQuantity } : item
+          )
+        );
         toast.success("Cart updated");
       }
     } catch (error) {
@@ -65,7 +85,7 @@ const Cart = () => {
     try {
       setLoading(true);
       await api.delete("cart/remove-Item", { data: { productId } });
-      setCartItems(prev => prev.filter(item => item.productId._id !== productId));
+      setCartItems((prev) => prev.filter((item) => item.productId._id !== productId));
       toast.success("Item removed from cart");
     } catch (error) {
       toast.error("Failed to remove item");
@@ -75,7 +95,7 @@ const Cart = () => {
   };
 
   const cartSubtotal = cartItems.reduce(
-    (total, item) => total + (item.productId.price * item.quantity),
+    (total, item) => total + item.productId.price * item.quantity,
     0
   );
   const cartTotal = cartSubtotal + delivery_fee - discount;
@@ -98,7 +118,7 @@ const Cart = () => {
           </button>
           <p className="mt-4 text-sm text-gray-500">
             Don't have an account?{" "}
-            <span 
+            <span
               className="text-blue-600 cursor-pointer hover:underline"
               onClick={() => navigate("/login")}
             >
@@ -189,10 +209,7 @@ const Cart = () => {
           ) : (
             <div className="text-center py-10">
               <p className="text-gray-500 mb-4">Your cart is empty</p>
-              <button 
-                onClick={() => navigate("/")}
-                className="btn-fill"
-              >
+              <button onClick={() => navigate("/")} className="btn-fill">
                 Continue Shopping
               </button>
             </div>
@@ -219,11 +236,8 @@ const Cart = () => {
               <p>Total</p>
               <p>₹{cartTotal.toFixed(2)}</p>
             </div>
-            <button 
-              className="w-full mt-4 btn-fill"
-              onClick={() => navigate("/checkout")}
-            >
-              Proceed to Checkout
+            <button className="w-full mt-4 btn-fill" onClick={processtoCheckout}>
+              Pick an Address
             </button>
           </div>
         )}
