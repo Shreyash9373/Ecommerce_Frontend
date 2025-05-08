@@ -12,7 +12,7 @@ import Cart from "./pages/Cart";
 import SigningPage from "./pages/SigningPage";
 import PlaceOrder from "./pages/PlaceOrder";
 import Orders from "./pages/Orders";
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from "./context/AuthContext";
 import UserAccountLayout from "./pages/layouts/UserAccountLayout";
 import MainLayout from "./pages/layouts/MainLayout";
 import GeneralPage from "./pages/account/GeneralPage";
@@ -20,6 +20,11 @@ import PasswordPage from "./pages/account/PasswordPage";
 import AddressPage from "./pages/account/AddressPage";
 import OrderPage from "./pages/account/OrderPage";
 import VendorRegistration from "./pages/vendor/VendorRegistration";
+import Checkout from "./pages/checkout";
+import PickAddress from "./pages/PickAddress";
+import PaymentPage from "./pages/PaymentPage";
+import ConfirmOrderPage from "./pages/ConfirmOrderPage";
+import UPIPaymentPage from "./pages/UPIPaymentPage";
 
 const App = () => {
   return (
@@ -45,6 +50,14 @@ const App = () => {
             <Route path="/login" element={<SigningPage />} />
             <Route path="/place-order" element={<PlaceOrder />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/pickAddress" element={<PickAddress />} />
+            <Route path="/pickPayment" element={<PaymentPage />} />
+            <Route path="/confirmOrder" element={<ConfirmOrderPage />} />
+            <Route path="/order/upi-payment/:orderId" element={<UPIPaymentPage />} />
+            <Route
+              path="/order/success/:orderId"
+              element={<div>Order Success Page (coming soon)</div>}
+            />
 
             {/* Product routes */}
             <Route path="products">

@@ -28,7 +28,13 @@ const SigningPage = () => {
 
   const validateForm = () => {
     if (currentState === "Sign Up") {
-      if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword || !formData.phone) {
+      if (
+        !formData.name ||
+        !formData.email ||
+        !formData.password ||
+        !formData.confirmPassword ||
+        !formData.phone
+      ) {
         toast.error("All fields are required");
         return false;
       }
@@ -58,32 +64,30 @@ const SigningPage = () => {
 
     try {
       if (currentState === "Sign Up") {
-        const res = await axios.post(
-          `${backendUrl}/api/v1/user/register`,
-          formData,
-          { withCredentials: true }
-        );
+        const res = await axios.post(`${backendUrl}/api/v1/user/register`, formData, {
+          withCredentials: true,
+        });
 
         if (res.status === 200 || res.status === 201) {
           toast.success("Registration successful! Please sign in.");
           setCurrentState("Sign In");
           // Clear password fields after successful registration
-          setFormData(prev => ({ ...prev, password: "", confirmPassword: "" }));
+          setFormData((prev) => ({ ...prev, password: "", confirmPassword: "" }));
         }
       } else {
         const res = await axios.post(
           `${backendUrl}/api/v1/user/login`,
           { email: formData.email, password: formData.password },
-          { 
+          {
             withCredentials: true,
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
 
-        if (res.data?.data?.accessToken) {
-          localStorage.setItem('accessToken', res.data.data.accessToken);
+        if (res?.data) {
+          localStorage.setItem("accessToken", res.data.data.accessToken);
           setUser(res.data.data.user);
           toast.success("Login successful!");
           navigate("/");
@@ -93,9 +97,8 @@ const SigningPage = () => {
       }
     } catch (error) {
       console.error("Authentication Error:", error);
-      const errorMessage = error.response?.data?.message || 
-                         error.message || 
-                         "Something went wrong. Please try again.";
+      const errorMessage =
+        error.response?.data?.message || error.message || "Something went wrong. Please try again.";
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -168,9 +171,7 @@ const SigningPage = () => {
 
       <div className="flex justify-between w-full mt-[-8px]">
         <span className="flex gap-2">
-          {currentState === "Sign In"
-            ? "Don't have an account?"
-            : "Already have an account!"}
+          {currentState === "Sign In" ? "Don't have an account?" : "Already have an account!"}
           <button
             type="button"
             onClick={handleStateToggle}
@@ -180,11 +181,7 @@ const SigningPage = () => {
           </button>
         </span>
       </div>
-      <button 
-        className="btn-fill font-light !px-8" 
-        type="submit"
-        disabled={loading}
-      >
+      <button className="btn-fill font-light !px-8" type="submit" disabled={loading}>
         {loading ? "Processing..." : currentState}
       </button>
     </form>
