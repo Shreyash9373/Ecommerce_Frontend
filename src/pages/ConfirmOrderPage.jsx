@@ -57,7 +57,7 @@ const ConfirmOrderPage = () => {
           }, // assuming backend sends this
         });
       } else {
-        navigate(`/order/success/${res.data.data.newOrder._id}`);
+        navigate(`/payment-success/${res.data.data.newOrder._id}`);
       }
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to place order");

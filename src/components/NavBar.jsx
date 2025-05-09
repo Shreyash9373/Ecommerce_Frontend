@@ -31,7 +31,7 @@ const NavBar = () => {
       </Link>
 
       <SearchBar className="w-1/2 hidden lg:block" />
-
+      
       <div className="flex items-center gap-2 lg:gap-6">
         <NavLink
           to="/registration"
@@ -82,9 +82,9 @@ const NavBar = () => {
 
         <Link to="/cart" className="relative">
           <IoCartOutline className="text-3xl cursor-pointer" />
-          <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
+          {/* <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
             {getCartCount()}
-          </p>
+          </p> */}
         </Link>
       </div>
     </div>
