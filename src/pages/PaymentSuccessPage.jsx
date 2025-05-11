@@ -40,7 +40,7 @@ const PaymentSuccessPage = () => {
           
           <button
             onClick={() => navigate("/account/orders")}
-            className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded flex items-center justify-center gap-2"
+            className="w-full btn-fill text-white py-2  flex items-center justify-center gap-2"
           >
             <FaListAlt /> View All Orders
           </button>

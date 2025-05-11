@@ -30,7 +30,7 @@ const ShopContextProvider = (props) => {
     if (!size) {
       toast.error("Please Select a Size");
       return;
-    } else {
+    } else { 
       toast.success("Item Added To The Cart");
     }
 

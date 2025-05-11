@@ -100,7 +100,7 @@ const ConfirmOrderPage = () => {
 
       <button
         onClick={handlePlaceOrder}
-        className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+        className="btn-fill transition"
       >
         Place Order
       </button>

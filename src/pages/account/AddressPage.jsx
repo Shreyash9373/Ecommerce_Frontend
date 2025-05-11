@@ -250,7 +250,7 @@ const AddressPage = () => {
       {/* heading */}
       <Breadcrumbs />
 
-      <Breadcrumbs />
+      
 
       <div className="w-11/12 mx-auto flex flex-col justify-center lg:[width:var(--lg-element-width)]">
         <h2 className="text-xl font-semibold md:text-2xl">Address</h2>

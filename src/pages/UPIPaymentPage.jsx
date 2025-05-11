@@ -81,7 +81,7 @@ const UPIPaymentPage = () => {
         <button
           type="submit"
           disabled={isUploading}
-          className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"
+          className="w-full btn-fill"
         >
           {isUploading ? "Uploading..." : "Submit Proof"}
         </button>
