@@ -45,7 +45,7 @@ const UPIPaymentPage = () => {
       console.log("r", response);
 
       toast.success("Payment proof uploaded successfully");
-      navigate("/orders"); // Redirect after successful upload
+      navigate(`/payment-success/${orderId}`); // Redirect after successful upload
     } catch (err) {
       toast.error("Failed to upload payment proof");
       console.error(err);
@@ -81,7 +81,7 @@ const UPIPaymentPage = () => {
         <button
           type="submit"
           disabled={isUploading}
-          className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"
+          className="w-full btn-fill"
         >
           {isUploading ? "Uploading..." : "Submit Proof"}
         </button>

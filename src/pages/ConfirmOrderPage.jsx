@@ -57,7 +57,7 @@ const ConfirmOrderPage = () => {
           }, // assuming backend sends this
         });
       } else {
-        navigate(`/order/success/${res.data.data.newOrder._id}`);
+        navigate(`/payment-success/${res.data.data.newOrder._id}`);
       }
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to place order");
@@ -100,7 +100,7 @@ const ConfirmOrderPage = () => {
 
       <button
         onClick={handlePlaceOrder}
-        className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+        className="btn-fill transition"
       >
         Place Order
       </button>

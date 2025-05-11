@@ -25,6 +25,7 @@ import PickAddress from "./pages/PickAddress";
 import PaymentPage from "./pages/PaymentPage";
 import ConfirmOrderPage from "./pages/ConfirmOrderPage";
 import UPIPaymentPage from "./pages/UPIPaymentPage";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 
 const App = () => {
   return (
@@ -54,6 +55,7 @@ const App = () => {
             <Route path="/pickPayment" element={<PaymentPage />} />
             <Route path="/confirmOrder" element={<ConfirmOrderPage />} />
             <Route path="/order/upi-payment/:orderId" element={<UPIPaymentPage />} />
+            <Route path="/payment-success/:orderId" element={<PaymentSuccessPage/>} />
             <Route
               path="/order/success/:orderId"
               element={<div>Order Success Page (coming soon)</div>}

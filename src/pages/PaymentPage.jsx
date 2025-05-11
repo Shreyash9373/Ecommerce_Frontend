@@ -54,7 +54,7 @@ const PaymentPage = () => {
 
         <button
           type="submit"
-          className="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+          className="mt-4 btn-fill transition"
         >
           Continue to Order Confirmation
         </button>
