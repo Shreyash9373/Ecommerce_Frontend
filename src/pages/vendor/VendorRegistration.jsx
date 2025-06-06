@@ -44,7 +44,6 @@ const VendorRegistration = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      {/* <Link to="/">Go to Home Page</Link> */}
       <div className="max-w-4xl w-full p-8 bg-white shadow-lg rounded-lg">
         <h2 className="text-2xl font-semibold text-center mb-6">Register as a Seller</h2>
         <form className="space-y-6 " onSubmit={handleSubmit(onSubmit)}>
@@ -65,7 +64,20 @@ const VendorRegistration = () => {
               <label className="text-gray-700 font-medium mb-1">Email Address *</label>
               <input
                 type="email"
-                {...register("email", { required: "Email is required" })}
+                {...register("email", { 
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address"
+                  },
+                  validate: {
+                    noDisposable: value => 
+                      !value.endsWith('.xyz') && 
+                      !value.endsWith('.online') && 
+                      !value.endsWith('.info') ||
+                      "Disposable email domains are not allowed"
+                  }
+                })}
                 className="w-full p-3 border rounded-md focus:ring-2 focus:ring-black outline-none"
               />
               <p className="text-red-500 text-sm">{errors.email?.message}</p>
@@ -78,7 +90,24 @@ const VendorRegistration = () => {
                 type="password"
                 {...register("password", {
                   required: "Password is required",
-                  minLength: { value: 6, message: "Must be at least 6 characters" },
+                  minLength: { 
+                    value: 8, 
+                    message: "Password must be at least 8 characters" 
+                  },
+                  validate: {
+                    hasUpperCase: value => 
+                      /[A-Z]/.test(value) || 
+                      "Must contain at least one uppercase letter",
+                    hasLowerCase: value => 
+                      /[a-z]/.test(value) || 
+                      "Must contain at least one lowercase letter",
+                    hasNumber: value => 
+                      /[0-9]/.test(value) || 
+                      "Must contain at least one number",
+                    hasSpecialChar: value =>
+                      /[!@#$%^&*(),.?":{}|<>]/.test(value) ||
+                      "Must contain at least one special character"
+                  }
                 })}
                 className="w-full p-3 border rounded-md focus:ring-2 focus:ring-black outline-none"
               />
@@ -92,7 +121,18 @@ const VendorRegistration = () => {
                 type="tel"
                 {...register("phone", {
                   required: "Phone Number is required",
-                  pattern: { value: /^\d{10}$/, message: "Invalid phone number format" },
+                  pattern: { 
+                    value: /^[6-9]\d{9}$/, 
+                    message: "Invalid Indian phone number format (should start with 6-9 and have 10 digits)" 
+                  },
+                  minLength: {
+                    value: 10,
+                    message: "Phone number must be 10 digits"
+                  },
+                  maxLength: {
+                    value: 10,
+                    message: "Phone number must be 10 digits"
+                  }
                 })}
                 className="w-full p-3 border rounded-md focus:ring-2 focus:ring-black outline-none"
               />
@@ -123,28 +163,6 @@ const VendorRegistration = () => {
               </select>
               <p className="text-red-500 text-sm">{errors.businessType?.message}</p>
             </div>
-
-            {/* Aadhaar Card Upload */}
-            {/* <div className="flex flex-col">
-            <label className="text-gray-700 font-medium mb-1">Aadhaar Card *</label>
-            <input
-              type="file"
-              {...register("aadhaarCard", { required: "Aadhaar Card is required" })}
-              className="w-full p-3 border rounded-md"
-            />
-            <p className="text-red-500 text-sm">{errors.aadhaarCard?.message}</p>
-          </div> */}
-
-            {/* PAN Card Upload */}
-            {/* <div className="flex flex-col">
-            <label className="text-gray-700 font-medium mb-1">PAN Card *</label>
-            <input
-              type="file"
-              {...register("panCard", { required: "PAN Card is required" })}
-              className="w-full p-3 border rounded-md"
-            />
-            <p className="text-red-500 text-sm">{errors.panCard?.message}</p>
-          </div> */}
           </div>
 
           {/* Submit Button */}

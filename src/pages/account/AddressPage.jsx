@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { IoAdd } from "react-icons/io5";
 import { FaHome, FaBuilding, FaMapMarkerAlt } from "react-icons/fa";
 import axios from "axios";
@@ -34,24 +34,7 @@ const AddressPage = () => {
     type: "home"
   });
 
-  useEffect(() => {
-    const checkAddresses = async () => {
-      if (user && (!user.addresses || user.addresses.length === 0)) {
-        console.log('Forcing user data refresh...');
-        await fetchUser(true); // Force refresh with addresses
-      }
-    };
-      
-  checkAddresses();
-}, [user, fetchUser]);
-  // Fetch addresses when user changes
-  useEffect(() => {
-    if (user?._id) {
-      fetchAddresses();
-    }
-  }, [user]);
-
-  const fetchAddresses = async () => {
+  const fetchAddresses = useCallback(async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('accessToken');
@@ -70,8 +53,6 @@ const AddressPage = () => {
         }
       );
       
-      console.log("User data:", data.user); // Debugging
-      
       if (data?.user?.addresses && Array.isArray(data.user.addresses)) {
         setAddresses(data.user.addresses);
       } else {
@@ -84,8 +65,24 @@ const AddressPage = () => {
     } finally {
       setLoading(false);
     }
-  };
-  console.log('Current user addresses:', user?.addresses);
+  }, []);
+
+  useEffect(() => {
+    const checkAddresses = async () => {
+      if (user && (!user.addresses || user.addresses.length === 0)) {
+        await fetchUser(true); // Force refresh with addresses
+      }
+    };
+      
+    checkAddresses();
+  }, [user, fetchUser]);
+
+  useEffect(() => {
+    if (user?._id) {
+      fetchAddresses();
+    }
+  }, [user, fetchAddresses]);
+
   const handleAddAddress = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -94,7 +91,7 @@ const AddressPage = () => {
       const token = localStorage.getItem('accessToken');
       if (!token) throw new Error("Authentication required");
 
-      const response = await axios.patch(
+      await axios.patch(
         `${import.meta.env.VITE_BACKEND_URI}/api/v1/user/add-address`,
         newAddress,
         {
@@ -104,8 +101,6 @@ const AddressPage = () => {
           withCredentials: true
         }
       );
-
-      console.log("Add address response:", response.data); // Debugging
 
       toast.success("Address added successfully");
       setAddModal(false);
@@ -118,7 +113,7 @@ const AddressPage = () => {
         isDefault: false,
         type: "home"
       });
-      fetchUser(); // Refresh user data
+      await fetchUser(); // Refresh user data
     } catch (error) {
       console.error("Add address error:", error);
       toast.error(error.response?.data?.message || "Failed to add address");
@@ -135,7 +130,7 @@ const AddressPage = () => {
       const token = localStorage.getItem('accessToken');
       if (!token) throw new Error("Authentication required");
 
-      const response = await axios.patch(
+      await axios.patch(
         `${import.meta.env.VITE_BACKEND_URI}/api/v1/user/update-address/${editingAddr._id}`,
         editingAddr,
         {
@@ -146,11 +141,9 @@ const AddressPage = () => {
         }
       );
 
-      console.log("Edit address response:", response.data); // Debugging
-
       toast.success("Address updated successfully");
       setEditModal(false);
-      fetchUser(); // Refresh user data
+      await fetchUser(); // Refresh user data
     } catch (error) {
       console.error("Edit address error:", error);
       toast.error(error.response?.data?.message || "Failed to update address");
@@ -166,7 +159,7 @@ const AddressPage = () => {
       const token = localStorage.getItem('accessToken');
       if (!token) throw new Error("Authentication required");
 
-      const response = await axios.delete(
+      await axios.delete(
         `${import.meta.env.VITE_BACKEND_URI}/api/v1/user/delete-address/${addressId}`,
         {
           headers: {
@@ -176,10 +169,8 @@ const AddressPage = () => {
         }
       );
 
-      console.log("Delete address response:", response.data); // Debugging
-
       toast.success("Address deleted successfully");
-      fetchUser(); // Refresh user data
+      await fetchUser(); // Refresh user data
     } catch (error) {
       console.error("Delete address error:", error);
       toast.error(error.response?.data?.message || "Failed to delete address");
@@ -191,7 +182,7 @@ const AddressPage = () => {
       const token = localStorage.getItem('accessToken');
       if (!token) throw new Error("Authentication required");
 
-      const response = await axios.patch(
+      await axios.patch(
         `${import.meta.env.VITE_BACKEND_URI}/api/v1/user/set-default-address/${addressId}`,
         {},
         {
@@ -202,10 +193,8 @@ const AddressPage = () => {
         }
       );
 
-      console.log("Set default response:", response.data); // Debugging
-
       toast.success("Default address updated");
-      fetchUser(); // Refresh user data
+      await fetchUser(); // Refresh user data
     } catch (error) {
       console.error("Set default address error:", error);
       toast.error(error.response?.data?.message || "Failed to set default address");
@@ -247,10 +236,7 @@ const AddressPage = () => {
 
   return (
     <div className="[--lg-element-width:75%] py-[--y-padding] flex flex-col min-h-full gap-8 md:ml-12 lg:ml-24">
-      {/* heading */}
       <Breadcrumbs />
-
-      
 
       <div className="w-11/12 mx-auto flex flex-col justify-center lg:[width:var(--lg-element-width)]">
         <h2 className="text-xl font-semibold md:text-2xl">Address</h2>
@@ -259,9 +245,7 @@ const AddressPage = () => {
         </span>
       </div>
 
-      {/* addresses */}
       <div className="w-11/12 mx-auto grid grid-cols-1 gap-8 lg:grid-cols-2 md:p-8 2xl:grid-cols-3">
-        {/* add address button */}
         <button
           onClick={() => setAddModal(true)}
           className="min-h-[20vh] shadow-xl border border-dashed border-gray-400 text-gray-800 flex flex-col justify-center items-center gap-2 hover:bg-gray-50 transition-colors rounded-lg"
@@ -270,27 +254,23 @@ const AddressPage = () => {
           <span className="font-medium">Add New Address</span>
         </button>
         
-        {/* address list */}
         {addresses.length > 0 ? (
           addresses.map((addr) => (
             <div 
               key={addr._id} 
               className={`shadow-xl p-6 border ${addr.isDefault ? 'border-blue-500 bg-blue-50' : 'border-gray-200'} flex flex-col gap-4 rounded-lg relative`}
             >
-              {/* Default badge */}
               {addr.isDefault && (
                 <span className="absolute top-2 right-2 text-xs bg-blue-500 text-white px-2 py-1 rounded-full">
                   Default
                 </span>
               )}
               
-              {/* Address type and icon */}
               <div className="flex items-center gap-2">
                 {getAddressIcon(addr.type)}
                 <span className="font-medium capitalize">{addr.type}</span>
               </div>
               
-              {/* Address details */}
               <div className="flex flex-col gap-1 text-gray-700">
                 <span className="text-sm md:text-base">{addr.street}</span>
                 <span className="text-sm md:text-base">{addr.city}, {addr.state}</span>
@@ -298,7 +278,6 @@ const AddressPage = () => {
                 <span className="text-sm md:text-base">ZIP: {addr.zip}</span>
               </div>
               
-              {/* Address actions */}
               <div className="flex divide-x divide-gray-300 border-t border-gray-200 pt-3 mt-auto">
                 <button
                   onClick={() => {
@@ -325,18 +304,16 @@ const AddressPage = () => {
               </div>
             </div>
           ))
-        ) : (
+        ) : !loading && (
           <div className="col-span-full text-center py-8">
             <p className="text-gray-500">No addresses found. Add your first address!</p>
           </div>
         )}
       </div>
 
-      {/* Add Address Modal */}
       <Modal open={addModal} onCancel={() => setAddModal(false)} title="Add New Address">
         <form onSubmit={handleAddAddress} className="flex flex-col gap-6">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {/* Address Type */}
             <div className="col-span-full">
               <label className="block mb-1">Address Type</label>
               <div className="flex gap-4">
@@ -376,7 +353,6 @@ const AddressPage = () => {
               </div>
             </div>
 
-            {/* Street */}
             <div className="col-span-full">
               <label htmlFor="street">Street Address</label>
               <FormInput 
@@ -388,7 +364,6 @@ const AddressPage = () => {
               />
             </div>
             
-            {/* City */}
             <div className="flex flex-col gap-1">
               <label htmlFor="city">City</label>
               <FormInput 
@@ -400,7 +375,6 @@ const AddressPage = () => {
               />
             </div>
             
-            {/* State */}
             <div className="flex flex-col gap-1">
               <label htmlFor="state">State/Province</label>
               <FormInput 
@@ -412,7 +386,6 @@ const AddressPage = () => {
               />
             </div>
             
-            {/* Country */}
             <div className="flex flex-col gap-1">
               <label htmlFor="country">Country</label>
               <FormInput 
@@ -424,7 +397,6 @@ const AddressPage = () => {
               />
             </div>
             
-            {/* Zip code */}
             <div className="flex flex-col gap-1">
               <label htmlFor="zip">ZIP/Postal Code</label>
               <FormInput 
@@ -436,7 +408,6 @@ const AddressPage = () => {
               />
             </div>
             
-            {/* Default checkbox */}
             <div className="col-span-full flex items-center gap-2">
               <input
                 type="checkbox"
@@ -450,7 +421,6 @@ const AddressPage = () => {
             </div>
           </div>
           
-          {/* Form buttons */}
           <div className="flex gap-4">
             <button 
               type="button" 
@@ -471,11 +441,9 @@ const AddressPage = () => {
         </form>
       </Modal>
 
-      {/* Edit Address Modal */}
       <Modal open={editModal} onCancel={() => setEditModal(false)} title="Edit Address">
         <form onSubmit={handleEditAddress} className="flex flex-col gap-6">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {/* Address Type */}
             <div className="col-span-full">
               <label className="block mb-1">Address Type</label>
               <div className="flex gap-4">
@@ -515,7 +483,6 @@ const AddressPage = () => {
               </div>
             </div>
 
-            {/* Street */}
             <div className="col-span-full">
               <label htmlFor="street">Street Address</label>
               <FormInput 
@@ -527,7 +494,6 @@ const AddressPage = () => {
               />
             </div>
             
-            {/* City */}
             <div className="flex flex-col gap-1">
               <label htmlFor="city">City</label>
               <FormInput 
@@ -539,7 +505,6 @@ const AddressPage = () => {
               />
             </div>
             
-            {/* State */}
             <div className="flex flex-col gap-1">
               <label htmlFor="state">State/Province</label>
               <FormInput 
@@ -551,7 +516,6 @@ const AddressPage = () => {
               />
             </div>
             
-            {/* Country */}
             <div className="flex flex-col gap-1">
               <label htmlFor="country">Country</label>
               <FormInput 
@@ -563,7 +527,6 @@ const AddressPage = () => {
               />
             </div>
             
-            {/* Zip code */}
             <div className="flex flex-col gap-1">
               <label htmlFor="zip">ZIP/Postal Code</label>
               <FormInput 
@@ -575,7 +538,6 @@ const AddressPage = () => {
               />
             </div>
             
-            {/* Default checkbox */}
             <div className="col-span-full flex items-center gap-2">
               <input
                 type="checkbox"
@@ -589,7 +551,6 @@ const AddressPage = () => {
             </div>
           </div>
           
-          {/* Form buttons */}
           <div className="flex gap-4">
             <button 
               type="button" 

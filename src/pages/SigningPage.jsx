@@ -26,8 +26,31 @@ const SigningPage = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const validatePassword = (password) => {
+    const errors = [];
+    
+    if (password.length < 8) {
+      errors.push("Password must be at least 8 characters");
+    }
+    if (!/[A-Z]/.test(password)) {
+      errors.push("Password must contain at least one uppercase letter");
+    }
+    if (!/[a-z]/.test(password)) {
+      errors.push("Password must contain at least one lowercase letter");
+    }
+    if (!/[0-9]/.test(password)) {
+      errors.push("Password must contain at least one number");
+    }
+    if (!/[^A-Za-z0-9]/.test(password)) {
+      errors.push("Password must contain at least one special character");
+    }
+    
+    return errors;
+  };
+
   const validateForm = () => {
     if (currentState === "Sign Up") {
+      // Check for empty fields
       if (
         !formData.name ||
         !formData.email ||
@@ -38,17 +61,40 @@ const SigningPage = () => {
         toast.error("All fields are required");
         return false;
       }
+
+      // Validate email format
+      if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+        toast.error("Please enter a valid email address");
+        return false;
+      }
+
+      // Validate phone number (basic validation)
+      if (!/^\d{10}$/.test(formData.phone)) {
+        toast.error("Please enter a valid phone number (10 digits)");
+        return false;
+      }
+
+      // Check if passwords match
       if (formData.password !== formData.confirmPassword) {
         toast.error("Passwords do not match");
         return false;
       }
-      if (formData.password.length < 6) {
-        toast.error("Password must be at least 6 characters");
+
+      // Validate password complexity
+      const passwordErrors = validatePassword(formData.password);
+      if (passwordErrors.length > 0) {
+        passwordErrors.forEach(error => toast.error(error));
         return false;
       }
     } else {
+      // Sign In validation
       if (!formData.email || !formData.password) {
         toast.error("Email and password are required");
+        return false;
+      }
+      
+      if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+        toast.error("Please enter a valid email address");
         return false;
       }
     }
@@ -72,7 +118,14 @@ const SigningPage = () => {
           toast.success("Registration successful! Please sign in.");
           setCurrentState("Sign In");
           // Clear password fields after successful registration
-          setFormData((prev) => ({ ...prev, password: "", confirmPassword: "" }));
+          setFormData((prev) => ({ 
+            ...prev, 
+            password: "", 
+            confirmPassword: "",
+            // Keep other fields for easier sign in
+            email: prev.email,
+            name: prev.name
+          }));
         }
       } else {
         const res = await axios.post(
@@ -97,8 +150,23 @@ const SigningPage = () => {
       }
     } catch (error) {
       console.error("Authentication Error:", error);
-      const errorMessage =
-        error.response?.data?.message || error.message || "Something went wrong. Please try again.";
+      let errorMessage = "Something went wrong. Please try again.";
+      
+      if (error.response) {
+        // Handle specific error messages from the backend
+        if (error.response.status === 400) {
+          errorMessage = error.response.data.message || "Invalid request data";
+        } else if (error.response.status === 401) {
+          errorMessage = "Invalid email or password";
+        } else if (error.response.status === 409) {
+          errorMessage = "Email already registered";
+        } else if (error.response.status === 429) {
+          errorMessage = "Too many attempts. Please try again later.";
+        }
+      } else if (error.request) {
+        errorMessage = "No response from server. Please check your connection.";
+      }
+      
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -127,11 +195,13 @@ const SigningPage = () => {
           />
           <FormInput
             name="phone"
-            placeholder="Phone Number"
+            type="tel"
+            placeholder="Phone Number (10 digits)"
             className="w-full rounded-sm"
             value={formData.phone}
             onChange={handleChange}
             required
+            pattern="[0-9]{10,15}"
           />
         </>
       )}
@@ -148,12 +218,12 @@ const SigningPage = () => {
       <FormInput
         type="password"
         name="password"
-        placeholder="Password"
+        placeholder={currentState === "Sign Up" ? "Password (min 8 chars with uppercase, lowercase, number & special char)" : "Password"}
         className="w-full rounded-sm"
         value={formData.password}
         onChange={handleChange}
         required
-        minLength={6}
+        minLength={8}
       />
 
       {currentState === "Sign Up" && (
@@ -165,7 +235,7 @@ const SigningPage = () => {
           value={formData.confirmPassword}
           onChange={handleChange}
           required
-          minLength={6}
+          minLength={8}
         />
       )}
 
