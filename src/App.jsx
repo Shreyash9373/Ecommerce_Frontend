@@ -26,6 +26,8 @@ import PaymentPage from "./pages/PaymentPage";
 import ConfirmOrderPage from "./pages/ConfirmOrderPage";
 import UPIPaymentPage from "./pages/UPIPaymentPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import Insights from "./pages/account/Insights";
 
 const App = () => {
   return (
@@ -40,6 +42,7 @@ const App = () => {
             <Route path="password" element={<PasswordPage />} />
             <Route path="address" element={<AddressPage />} />
             <Route path="orders" element={<OrderPage />} />
+            <Route path="insights" element={<Insights/>} />
           </Route>
 
           {/* Main routes */}
@@ -49,6 +52,7 @@ const App = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<SigningPage />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/place-order" element={<PlaceOrder />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/pickAddress" element={<PickAddress />} />

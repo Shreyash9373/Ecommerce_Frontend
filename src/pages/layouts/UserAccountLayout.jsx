@@ -41,6 +41,9 @@ const UserAccountLayout = () => {
           <NavLink onClick={handleMenuToggle} to="orders" className={linkClasses}>
             Orders
           </NavLink>
+          <NavLink onClick={handleMenuToggle} to="insights" className={linkClasses}>
+  Insights
+</NavLink>
         </div>
       </div>
 
@@ -66,6 +69,9 @@ const UserAccountLayout = () => {
             <NavLink to="orders" className={linkClasses}>
               Orders
             </NavLink>
+            <NavLink to="insights" className={linkClasses}>
+  Insights
+</NavLink>
           </div>
         </div>
         {/* content */}
