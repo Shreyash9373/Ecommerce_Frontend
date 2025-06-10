@@ -250,6 +250,15 @@ const SigningPage = () => {
             {currentState === "Sign In" ? "Sign up" : "Sign in"}
           </button>
         </span>
+        {currentState === "Sign In" && (
+    <button
+      type="button"
+      onClick={() => navigate("/forgot-password")}
+      className="cursor-pointer underline font-semibold hover:text-gray-600"
+    >
+      Forgot Password?
+    </button>
+  )}
       </div>
       <button className="btn-fill font-light !px-8" type="submit" disabled={loading}>
         {loading ? "Processing..." : currentState}
